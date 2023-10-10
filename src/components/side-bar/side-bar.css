@@ -1,0 +1,72 @@
+
+.side-bar div[class^="col"]:first-child{
+    height: 100vh;
+    background-image: url("../../assets/img/bg/aihm-karari-yalcinkaya-dilekce.jpg");
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.side-bar div[class^="col"]:first-child::after{
+    content: "";
+    position: absolute;
+    top:0; left:0; bottom:0; right:0;
+    background-color: var(--color2);
+    opacity: 0.85;
+
+}
+
+.side-bar img{
+    position: absolute;
+    top:1.5rem;
+    z-index: 10;
+}
+
+.side-bar .toolbar{
+    position: absolute;
+    top:9rem;
+    left:2rem;
+    color: white;
+    z-index: 10;
+
+}
+
+.toolbar h3{
+    margin-left: 10px;
+}
+
+.side-bar .toolbar svg{
+    font-size: 3.5rem;
+    margin-right: 10px;
+}
+
+.side-bar .toolbar svg:hover{
+    color: white;
+}
+
+
+
+.step{
+    display: flex;
+    flex-direction: row;
+    align-items:center;
+ 
+   
+}
+
+.desc-main{
+    line-height: 120%;
+    font-size: 1.1rem;
+    transform: translateY(5%);
+}
+
+@media(max-width: 768px){
+    .side-bar div[class^="col"]:first-child{
+        height: 100px;
+    }
+}
