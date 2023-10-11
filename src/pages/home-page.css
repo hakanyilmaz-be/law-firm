@@ -1,0 +1,16 @@
+.title-border {
+    width: 90px;
+    height: 1.5px;
+    background: var(--color2);
+    background: linear-gradient(to right, transparent,var(--color2), transparent);
+    margin: 0 auto;
+}
+
+.desc{
+    text-align: center;
+}
+
+.file-type button{
+   margin-right: 2rem;
+   width: 8rem;
+}

@@ -12,7 +12,7 @@ const SideBar = () => {
         <Col md={12}>
           <img src={logo} alt="TRVLCar" />
          <div className="toolbar">
-         <h3>Yapmaniz Gerekenler</h3>
+         <h3>Yapmanız Gerekenler</h3>
          <Spacer/>
             <div className='step'>
                 <div><BsFill1CircleFill/></div>
