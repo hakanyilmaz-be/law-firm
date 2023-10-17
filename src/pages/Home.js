@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { handleGenerateDocument } from "../components/word-generator/WordGenerator.js";
@@ -9,13 +9,12 @@ import Spacer from "../components/spacer/spacer";
 import cities from "../assets/data/cities.json";
 
 const Home = () => {
-  const [activeButton, setActiveButton] = useState(null);
-
   const handleButtonClick = (type) => {
-    setActiveButton(type);
+    formik.setFieldValue("fileType", type);
   };
 
   const initialValues = {
+    fileType: "",
     fileStatus: "",
     currentStatus: "",
     courtCity: "",
@@ -32,54 +31,51 @@ const Home = () => {
     isLifeSentence: false,
   };
 
-  const validationSchema = Yup.object()
-    .shape({
-      fileStatus: Yup.string().required("Bu alanın doldurulması zorunludur"),
-      currentStatus: Yup.string().required("Bu alanın doldurulması zorunludur"),
-      courtCity: Yup.string().required("Bu alanın doldurulması zorunludur"),
-      convictionDate: Yup.date().required("Bu alanın doldurulması zorunludur"),
-      mainAccusation: Yup.string().required("Bu alanın doldurulması zorunludur"),
-      otherAccusations: Yup.array().min(1, "En az bir suçlama seçmelisiniz"),
-      prisonDuration: Yup.object().test(
-        'prison-duration-validation',
-        'You must specify a duration or select life sentence',
-        function(value) {
-          const isLifeSentence = this.parent.isLifeSentence;
+  const validationSchema = Yup.object({
+    fileType: Yup.string()
+      .required("Bu alanın doldurulması zorunludur")
+      .oneOf(["primary", "dark"], "Geçersiz dosya türü seçildi"),
+    fileStatus: Yup.string().required("Bu alanın doldurulması zorunludur"),
+    confirmData: Yup.bool().oneOf([true], "Verileri onaylamalısınız"),
+    currentStatus: Yup.string().when("fileStatus", (fileStatus, schema) => {
+      if (fileStatus)
+        return schema.required("Bu alanın doldurulması zorunludur");
+      return schema;
+    }),
+    courtCity: Yup.string().when("fileStatus", (fileStatus, schema) => {
+      if (fileStatus)
+        return schema.required("Bu alanın doldurulması zorunludur");
+      return schema;
+    }),
+    convictionDate: Yup.date().required("Bu alanın doldurulması zorunludur"),
+    mainAccusation: Yup.string().required("Bu alanın doldurulması zorunludur"),
+    otherAccusations: Yup.array().min(1, "En az bir suçlama seçmelisiniz"),
+    prisonDuration: Yup.object().test(
+      "prison-duration-validation",
+      "You must specify a duration or select life sentence",
+      function (value) {
+        const isLifeSentence = this.parent.isLifeSentence;
 
-          // If life sentence is checked, then the validation should pass
-          if (isLifeSentence) {
-            return true;
-          }
-
-          // Otherwise, check if at least one of the fields in prisonDuration has a value
-          return value.days || value.months || value.years;
+        // If life sentence is checked, then the validation should pass
+        if (isLifeSentence) {
+          return true;
         }
-      ),
-      confirmationDecisionDate: Yup.date().required("Bu alanın doldurulması zorunludur"),
-      confirmData: Yup.bool().oneOf([true], "Verileri onaylamalısınız"),
-    })
-    .when("fileStatus", {
-      is: "Yargıtay Onama kararı verdi",
-      then: (schema) =>
-        schema.shape({
-          currentStatus: Yup.string().required("Bu alanın doldurulması zorunludur"),
-          courtCity: Yup.string().required("Bu alanın doldurulması zorunludur"),
-          convictionDate: Yup.date().required("Bu alanın doldurulması zorunludur"),
-          mainAccusation: Yup.string().required("Bu alanın doldurulması zorunludur"),
-          otherAccusations: Yup.array().min(1, "En az bir suçlama seçmelisiniz"),
-          confirmationDecisionDate: Yup.date().required("Bu alanın doldurulması zorunludur"),
-        }),
-    });
 
+        // Otherwise, check if at least one of the fields in prisonDuration has a value
+        return value.days || value.months || value.years;
+      }
+    ),
+    confirmationDecisionDate: Yup.date().required(
+      "Bu alanın doldurulması zorunludur"
+    ),
+  });
 
   const onSubmit = (values) => {
-    if (Object.keys(formik.errors).length === 0) {
-      handleGenerateDocument(values);
-    }
+    console.log(values)
+    handleGenerateDocument(values);
   };
 
   const formik = useFormik({
-    enableReinitialize: true,
     initialValues,
     validationSchema,
     onSubmit,
@@ -87,12 +83,15 @@ const Home = () => {
 
   const handleLifeSentenceChange = (e) => {
     const checked = e.target.checked;
-    formik.setFieldValue('isLifeSentence', checked);
+    formik.setFieldValue("isLifeSentence", checked);
     if (checked) {
-      formik.setFieldValue('prisonDuration', { days: '', months: '', years: '' });
+      formik.setFieldValue("prisonDuration", {
+        days: "",
+        months: "",
+        years: "",
+      });
     }
   };
-  
 
   const fileStatusOptions = [
     {
@@ -116,7 +115,7 @@ const Home = () => {
       label: "Dosyam Yargıtay 3.Ceza Dairesi'nde",
     },
     {
-      value: "Yargıtay Onama kararı verdi",
+      value: "onama",
       label: "Yargıtay Onama kararı verdi",
     },
     {
@@ -143,26 +142,34 @@ const Home = () => {
       <Spacer />
       <Form noValidate onSubmit={formik.handleSubmit}>
         <div className="file-type mb-5">
-          <p>
-            <b>1- Dosya türünü seçiniz:</b>
-          </p>
-          <Button
-            variant="outline-primary"
-            className={activeButton === "primary" ? "active" : ""}
-            onClick={() => handleButtonClick("primary")}
-          >
-            Adli
-          </Button>
-          <Button
-            variant="outline-dark"
-            className={activeButton === "dark" ? "active" : ""}
-            onClick={() => handleButtonClick("dark")}
-          >
-            İdari
-          </Button>
+          <Form.Group as={Col} md={12} lg={12} className="mb-5">
+            <Form.Label>
+              <b>1- Dosya türünü seçiniz:</b>
+            </Form.Label>
+            <div>
+              <Button
+                variant="outline-primary"
+                className={formik.values.fileType === "primary" ? "active" : ""}
+                onClick={() => handleButtonClick("primary")}
+              >
+                Adli
+              </Button>
+
+              <Button
+                variant="outline-dark"
+                className={formik.values.fileType === "dark" ? "active" : ""}
+                onClick={() => handleButtonClick("dark")}
+              >
+                İdari
+              </Button>
+            </div>
+            {formik.touched.fileType && formik.errors.fileType ? (
+              <div className="text-danger">{formik.errors.fileType}</div>
+            ) : null}
+          </Form.Group>
         </div>
 
-        {activeButton === "primary" && (
+        {formik.values.fileType === "primary" && (
           <>
             <Form.Group as={Col} md={12} lg={12} className="mb-5">
               <Form.Label>
@@ -190,7 +197,7 @@ const Home = () => {
               </Form.Control.Feedback>
             </Form.Group>
 
-            {formik.values.fileStatus === "Yargıtay Onama kararı verdi" && (
+            {formik.values.fileStatus === "onama" && (
               <div>
                 <Form.Group as={Col}>
                   <Form.Label>
