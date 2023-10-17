@@ -1,28 +1,31 @@
-import { Document, Packer, Paragraph } from "docx";
+import Docxtemplater from "docxtemplater";
+import PizZip from "pizzip";
 
 export const handleGenerateDocument = (data) => {
-    fetch(process.env.PUBLIC_URL + '/template.txt')
-        .then(response => response.text())
-        .then(text => {
-            const updatedText = text
-                .replace('{{adli}}', data.currentStatus)
-                .replace('{{dosyaDurumu}}', data.courtCity)
-                // Add other replacements as necessary...
+    fetch(process.env.PUBLIC_URL + '/template.docx')
+        .then(response => response.blob())
+        .then(blob => blob.arrayBuffer())
+        .then(arrayBuffer => {
+            const zip = new PizZip(arrayBuffer);
+            const doc = new Docxtemplater(zip);
 
-            const doc = new Document({
-                sections: [
-                    {
-                        properties: {},
-                        children: [new Paragraph(updatedText)]
-                    }
-                ]
+            doc.setData({
+                adli: data.currentStatus,
+                dosyaDurumu: data.courtCity,
+                // ... other replacements
             });
 
-            Packer.toBlob(doc).then(blob => {
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = 'guncellenmis-belge.docx';
-                link.click();
-            });
+            try {
+                doc.render();
+            } catch (error) {
+                console.error(error);
+            }
+
+            const output = doc.getZip().generate({ type: "blob" });
+
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(output);
+            link.download = 'guncellenmis-belge.docx';
+            link.click();
         });
 };
