@@ -13,15 +13,15 @@ TALEBİNDE BULUNAN     : Ad Soyad TC
 
 KONUSU                                   : AYM’nin İbrahim Er ve Diğerleri başvurusunda verdiği karar dikkate alınarak, AİHM tarafından 26 Eylül 2023 tarihinde açıklanan Yalçınkaya/Türkiye kararının CMK.311/e-f maddesi gereğince yeniden yargılama gerekçesi yapılarak, öncelikle infazın durdurulması sonrasında yapılacak yargılama neticesinde de BERAAT kararı verilmesi talebi hakkındadır. 
 
-AÇIKLAMALAR                     :
+AÇIKLAMALAR  :
 
 Mahkemeniz tarafından yapılan yargılama neticesinde Bylock kullanma, Bankasya’da hesabın olması, dernek, sendika üyesi olmak, sohbetlere katılma, sohbet yapma, gazete abonesi olma gerekçeleriyle hakkımda terör örgütü üyesi olma suçundan 6 yıl 3 ay hapis cezası verilmişti. Karar …… tarihinde onanarak kesinleşti. 
 
 Kararın kesinleşmesinden sonra Avrupa İnsan Hakları Mahkemesi Büyük Dairesi tarafından verilen Yalçınkaya/Türkiye kararında, AİHS’nin 6,7 ve 11. maddelerinde yer alan hakların ihlal edildiği belirtilerek benzer nitelikteki dosyalar için emsal olan yeni bir karar verildi. Kararın AİHM önünde olan 8.000 üzerindeki dosya için ve Türkiye’de bulunan 100.000’in üzerinde dosya için emsal nitelikte olduğu açıkça yer almıştır. Kararda yer alan tüm isnatlar mahkemeniz tarafından verilen mahkumiyet kararında yer alan isnatlarla birebir aynı olduğu için CMK. Madde 311 gereğince yeniden yargılama yapılarak, AİHM kararı doğrultusunda beraatime karar verilmesi gerekmektedir. Şöyle ki;
 
-I-AİHM Yalçınkaya Kararı İçeriği;
+I-AİHM Yalçınkaya Kararı İçeriği;{{adli}}
 
-1.Kayseri’de bir devlet okulunda öğretmen olan Yüksel Yalçınkaya hakkında, 6 Ocak 2017 tarihinde Kayseri Cumhuriyet Başsavcılığı tarafından terör örgütü üyeliği suçlamasıyla dava açılmıştır (prg. 37). İddianamede; Bylock uygulamasını kullandığı, Bank Asya’da hesabının olduğu ve hesaba para yatırıldığı, 667 sayılı KHK ile kapatılan Aktif Eğitim-Sen Sendikasının ve Kayseri Gönüllü Eğitimciler Derneği'nin üyesi olduğu, 672 sayılı KHK ile kamu görevinden ihraç edildiği ve isimsiz bir telefon ihbarından örgüt üyesi olduğuna dair bilgi alınması, suç delili olarak gösterilmiştir (prg. 53).  
+1.Kayseri’de {{dosyaDurumu}} bir devlet okulunda öğretmen olan Yüksel Yalçınkaya hakkında, 6 Ocak 2017 tarihinde Kayseri Cumhuriyet Başsavcılığı tarafından terör örgütü üyeliği suçlamasıyla dava açılmıştır (prg. 37). İddianamede; Bylock uygulamasını kullandığı, Bank Asya’da hesabının olduğu ve hesaba para yatırıldığı, 667 sayılı KHK ile kapatılan Aktif Eğitim-Sen Sendikasının ve Kayseri Gönüllü Eğitimciler Derneği'nin üyesi olduğu, 672 sayılı KHK ile kamu görevinden ihraç edildiği ve isimsiz bir telefon ihbarından örgüt üyesi olduğuna dair bilgi alınması, suç delili olarak gösterilmiştir (prg. 53).  
 2.Kayseri Ağır Ceza Mahkemesi 21 Mart 2017 tarihli duruşmada silahlı terör örgütüne üyelik suçundan altı yıl üç ay hapis cezası vermiştir (prg 63). Mahkûmiyet kararı, başvurucunun, "ByLock" adlı şifreli bir mesajlaşma uygulamasını kullanmasına, Bank Asya'da hesabının olmasına, KHK ile kapatılan bir sendika (Aktif Eğitimciler Sendikası) ve derneğe (Kayseri Gönüllü Eğitimciler Derneği) üye olmasına dayandırılmıştır (prg 68, 69, 70). 
 3.Mahkumiyet gerekçesi olarak MGK açıklamaları (prg. 108), MİT tarafından hazırlanan Bylock teknik raporu (prg. 114), KOM tarafından hazırlanan Bylock raporu, Siber güvenlik uzmanları tarafından hazırlanan Bylock  (prg. 123) ve İngiliz bir firma tarafından hazırlanan Bylock raporunun (prg. 128) gösterildiği kararda anlatılmıştır. 
 4.Başvurucu, yargılanmasının ve mahkûmiyetinin Sözleşme'nin 6, 7, 8 ve 11. maddelerinin ihlali anlamına geldiğinden bahisle 17 Mart 2020 tarihinde AİHM’e başvurmuştur (prg 1, 2).
