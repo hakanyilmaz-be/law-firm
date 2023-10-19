@@ -75,15 +75,15 @@ const Home = () => {
     let formattedDuration = [];
   
     if (duration.years) {
-      formattedDuration.push(`${duration.years} Yıl`);
+      formattedDuration.push(`${duration.years} yıl`);
     }
   
     if (duration.months) {
-      formattedDuration.push(`${duration.months} Ay`);
+      formattedDuration.push(`${duration.months} ay`);
     }
   
     if (duration.days) {
-      formattedDuration.push(`${duration.days} Gün`);
+      formattedDuration.push(`${duration.days} gün`);
     }
   
     return formattedDuration.join(" ");
