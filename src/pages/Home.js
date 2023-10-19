@@ -70,10 +70,62 @@ const Home = () => {
     ),
   });
 
-  const onSubmit = (values) => {
-    console.log(values)
-    handleGenerateDocument(values);
+  const formatPrisonDuration = (duration) => {
+    let formattedDuration = [];
+  
+    if (duration.years) {
+      formattedDuration.push(`${duration.years} Yıl`);
+    }
+  
+    if (duration.months) {
+      formattedDuration.push(`${duration.months} Ay`);
+    }
+  
+    if (duration.days) {
+      formattedDuration.push(`${duration.days} Gün`);
+    }
+  
+    return formattedDuration.join(" ");
   };
+  
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getUTCDate()).padStart(2, '0'); // Add leading 0s if needed
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-indexed, add leading 0s if needed
+    const year = date.getUTCFullYear();
+    
+    return `${day}/${month}/${year}`;
+  };
+  
+
+  const onSubmit = (values) => {
+    const processedValues = { ...values };
+  
+    if (processedValues.prisonDuration.days === "0") {
+      processedValues.prisonDuration.days = "";
+    }
+  
+    if (processedValues.prisonDuration.months === "0") {
+      processedValues.prisonDuration.months = "";
+    }
+  
+    processedValues.formattedPrisonDuration = formatPrisonDuration(processedValues.prisonDuration);
+
+  
+     // Format otherAccusations
+  if (processedValues.otherAccusations && Array.isArray(processedValues.otherAccusations)) {
+    processedValues.otherAccusations = processedValues.otherAccusations.join(", ");
+  }
+
+  // Format the date value
+  processedValues.formattedConfirmationDecisionDate = formatDate(processedValues.confirmationDecisionDate);
+
+    console.log(processedValues);
+    handleGenerateDocument(processedValues);
+  };
+  
+  
 
   const formik = useFormik({
     initialValues,
@@ -141,8 +193,8 @@ const Home = () => {
 
       <Spacer />
       <Form noValidate onSubmit={formik.handleSubmit}>
-        <div className="file-type mb-5">
-          <Form.Group as={Col} md={12} lg={12} className="mb-5">
+        <div className="file-type mb-4">
+          <Form.Group as={Col} md={12} lg={12} className="mb-4">
             <Form.Label>
               <b>1- Dosya türünü seçiniz:</b>
             </Form.Label>
@@ -171,7 +223,7 @@ const Home = () => {
 
         {formik.values.fileType === "primary" && (
           <>
-            <Form.Group as={Col} md={12} lg={12} className="mb-5">
+            <Form.Group as={Col} md={12} lg={12} className="mb-4">
               <Form.Label>
                 <b>2- Dosyanız hangi aşamada?</b>
               </Form.Label>
@@ -199,7 +251,7 @@ const Home = () => {
 
             {formik.values.fileStatus === "onama" && (
               <div>
-                <Form.Group as={Col}>
+                <Form.Group as={Col} className="mb-4">
                   <Form.Label>
                     <b>3- Güncel durumunuz?</b>
                   </Form.Label>
@@ -232,7 +284,7 @@ const Home = () => {
                   </Form.Control.Feedback>
                 </Form.Group>
 
-                <Form.Group as={Col}>
+                <Form.Group as={Col} className="mb-4">
                   <Form.Label>
                     <b>
                       4- Hangi ilin Ağır Ceza Mahkemesi mahkumiyet kararı verdi?
@@ -241,6 +293,7 @@ const Home = () => {
                   <Form.Control
                     as="select"
                     name="courtCity"
+                    style={{ width: "220px" }}
                     value={formik.values.courtCity}
                     onChange={formik.handleChange}
                     isInvalid={
@@ -259,7 +312,7 @@ const Home = () => {
                   </Form.Control.Feedback>
                 </Form.Group>
 
-                <Form.Group as={Col}>
+                <Form.Group as={Col} className="mb-4">
                   <Form.Label>
                     <b>
                       5- Ağır Ceza Mahkemesi'nin verdiği mahkumiyet karar
@@ -269,6 +322,7 @@ const Home = () => {
                   <Form.Control
                     type="date"
                     name="convictionDate"
+                    style={{ width: "220px" }}
                     value={formik.values.convictionDate}
                     onChange={formik.handleChange}
                     isInvalid={
@@ -281,7 +335,7 @@ const Home = () => {
                   </Form.Control.Feedback>
                 </Form.Group>
 
-                <Form.Group as={Col}>
+                <Form.Group as={Col} className="mb-4">
                   <Form.Label>
                     <b>6- Hakkinizdaki temel suçlama</b>
                   </Form.Label>
@@ -333,12 +387,14 @@ const Home = () => {
                   </Form.Control.Feedback>
                 </Form.Group>
                 <div>
-                  <Form.Group as={Col}>
+                  <Form.Group as={Col} className="mb-4">
+                  <div>
                     <Form.Label>
                       <b>
                         7- Mahkumiyet kararına konu olan suçlamalar nelerdir?
                       </b>
                     </Form.Label>
+                    </div>
                     {[
                       "Bylock",
                       "Bank Asya",
@@ -354,7 +410,9 @@ const Home = () => {
                     ].map((accusation, index) => (
                       <Form.Check
                         key={index}
+                        inline
                         type="checkbox"
+                        style={{marginRight: "40px"}}
                         label={accusation}
                         name="otherAccusations"
                         value={accusation}
@@ -374,7 +432,7 @@ const Home = () => {
                   </Form.Group>
                 </div>
 
-                <Form.Group as={Col}>
+                <Form.Group as={Col} className="mb-4">
                   <Form.Label>
                     <b>
                       8- Hakkinizda verilen hapis cezasının süresini giriniz
@@ -398,7 +456,7 @@ const Home = () => {
                         <option value="">Yıl Seçiniz</option>
                         {[...Array(100).keys()].map((year, index) => (
                           <option key={index} value={index + 1}>
-                            {index + 1} Yıl
+                            {index + 1} yıl
                           </option>
                         ))}
                       </Form.Control>
@@ -422,8 +480,8 @@ const Home = () => {
                       >
                         <option value="">Ay Seçiniz</option>
                         {[...Array(12).keys()].map((month, index) => (
-                          <option key={index} value={index + 1}>
-                            {index + 1} Ay
+                          <option key={index} value={month}>
+                            {month} ay
                           </option>
                         ))}
                       </Form.Control>
@@ -448,7 +506,7 @@ const Home = () => {
                         <option value="">Gün Seçiniz</option>
                         {[...Array(29).keys()].map((day) => (
                           <option key={day} value={day}>
-                            {day} Gün
+                            {day} gün
                           </option>
                         ))}
                       </Form.Control>
@@ -462,7 +520,7 @@ const Home = () => {
                   <div className="mb-3">
                     <Form.Check
                       type="checkbox"
-                      label="Müebbet Hapis Cezası"
+                      label="Müebbet"
                       name="isLifeSentence"
                       checked={formik.values.isLifeSentence}
                       onChange={handleLifeSentenceChange}
@@ -470,13 +528,14 @@ const Home = () => {
                   </div>
                 </Form.Group>
 
-                <Form.Group as={Col}>
+                <Form.Group as={Col} className="mb-4">
                   <Form.Label>
                     <b>9- Yargıtay Onama kararı tarihini giriniz</b>
                   </Form.Label>
                   <Form.Control
                     type="date"
                     name="confirmationDecisionDate"
+                    style={{ width: "220px" }}
                     value={formik.values.confirmationDecisionDate}
                     onChange={formik.handleChange}
                     isInvalid={

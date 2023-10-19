@@ -15,4 +15,7 @@
    width: 8rem;
 }
 
+.form-check-input {
+    border: solid 1.5px #b5c0d2!important;
 
+}

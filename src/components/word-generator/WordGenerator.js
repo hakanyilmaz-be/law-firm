@@ -10,8 +10,15 @@ export const handleGenerateDocument = (data) => {
             const doc = new Docxtemplater(zip);
 
             doc.setData({
+                courtCity: data.courtCity,
+                otherAccusations: data.otherAccusations,
+                mainAccusation: data.mainAccusation,
+                prisonDuration: data.formattedPrisonDuration,
+                confirmationDecisionDate: data.formattedConfirmationDecisionDate,
+                
                 adli: data.currentStatus,
-                dosyaDurumu: data.courtCity,
+
+
                 // ... other replacements
             });
 
@@ -25,7 +32,7 @@ export const handleGenerateDocument = (data) => {
 
             const link = document.createElement('a');
             link.href = URL.createObjectURL(output);
-            link.download = 'guncellenmis-belge.docx';
+            link.download = 'YARGILAMANIN İADESİ BAŞVURUSU-AİHM KARARI KAPSAMINDA.docx';
             link.click();
         });
 };

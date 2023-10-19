@@ -10,7 +10,7 @@ const SideBar = () => {
     <Container fluid className="side-bar" style={{ paddingLeft: 0, paddingRight: 0 }}>
       <Row>
         <Col md={12}>
-          <img src={logo} alt="TRVLCar" />
+          <img src={logo} alt="TRVLCar" className="img-fluid" />
          <div className="toolbar">
          <h3>Yapmanız Gerekenler</h3>
          <Spacer/>

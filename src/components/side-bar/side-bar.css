@@ -23,7 +23,7 @@
 
 .side-bar img{
     position: absolute;
-    top:1.5rem;
+    top:1.5rem; 
     z-index: 10;
 }
 
