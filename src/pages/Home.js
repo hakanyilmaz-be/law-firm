@@ -36,7 +36,7 @@ const Home = () => {
       .required("Bu alanın doldurulması zorunludur")
       .oneOf(["primary", "dark"], "Geçersiz dosya türü seçildi"),
     fileStatus: Yup.string().required("Bu alanın doldurulması zorunludur"),
-    confirmData: Yup.bool().oneOf([true], "Verileri onaylamalısınız"),
+    confirmData: Yup.bool().oneOf([true], "Onaylamalısınız"),
     currentStatus: Yup.string().when("fileStatus", (fileStatus, schema) => {
       if (fileStatus)
         return schema.required("Bu alanın doldurulması zorunludur");
@@ -65,6 +65,7 @@ const Home = () => {
         return value.days || value.months || value.years;
       }
     ),
+    isLifeSentence: Yup.bool(),
     confirmationDecisionDate: Yup.date().required(
       "Bu alanın doldurulması zorunludur"
     ),
@@ -171,10 +172,10 @@ const Home = () => {
       label: "Yargıtay Onama kararı verdi",
     },
     {
-      value: "AYM'ye Bireysel Başvurusu yapıldı",
+      value: "aym",
       label: "AYM'ye Bireysel Başvurusu yapıldı",
     },
-    { value: "AİHM Başvurusu yapıldı", label: "AİHM Başvurusu yapıldı" },
+    { value: "aihm", label: "AİHM Başvurusu yapıldı" },
   ];
 
   return (
@@ -249,7 +250,7 @@ const Home = () => {
               </Form.Control.Feedback>
             </Form.Group>
 
-            {formik.values.fileStatus === "onama" && (
+            {["onama", "aym", "aihm"].includes(formik.values.fileStatus) && (
               <div>
                 <Form.Group as={Col} className="mb-4">
                   <Form.Label>

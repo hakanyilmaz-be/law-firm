@@ -2,37 +2,44 @@ import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 
 export const handleGenerateDocument = (data) => {
-    fetch(process.env.PUBLIC_URL + '/template.docx')
-        .then(response => response.blob())
-        .then(blob => blob.arrayBuffer())
-        .then(arrayBuffer => {
-            const zip = new PizZip(arrayBuffer);
-            const doc = new Docxtemplater(zip);
+  fetch(process.env.PUBLIC_URL + "/template.docx")
+    .then((response) => response.blob())
+    .then((blob) => blob.arrayBuffer())
+    .then((arrayBuffer) => {
+      const zip = new PizZip(arrayBuffer);
+      const doc = new Docxtemplater(zip);
 
-            doc.setData({
-                courtCity: data.courtCity,
-                otherAccusations: data.otherAccusations,
-                mainAccusation: data.mainAccusation,
-                prisonDuration: data.formattedPrisonDuration,
-                confirmationDecisionDate: data.formattedConfirmationDecisionDate,
-                
-                adli: data.currentStatus,
+      let prisonSentenceString;
 
+      if (data.isLifeSentence) {
+        prisonSentenceString = "Müebbet"; // Life Sentence in Turkish
+      } else {
+        prisonSentenceString = data.formattedPrisonDuration; // Use your prison duration string here
+      }
+      doc.setData({
+        courtCity: data.courtCity,
+        otherAccusations: data.otherAccusations,
+        mainAccusation: data.mainAccusation,
+        prisonSentence: prisonSentenceString, // Set this value instead
+        confirmationDecisionDate: data.formattedConfirmationDecisionDate,
 
-                // ... other replacements
-            });
+        adli: data.currentStatus,
 
-            try {
-                doc.render();
-            } catch (error) {
-                console.error(error);
-            }
+        // ... other replacements
+      });
 
-            const output = doc.getZip().generate({ type: "blob" });
+      try {
+        doc.render();
+      } catch (error) {
+        console.error(error);
+      }
 
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(output);
-            link.download = 'YARGILAMANIN İADESİ BAŞVURUSU-AİHM KARARI KAPSAMINDA.docx';
-            link.click();
-        });
+      const output = doc.getZip().generate({ type: "blob" });
+
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(output);
+      link.download =
+        "YARGILAMANIN İADESİ BAŞVURUSU-AİHM KARARI KAPSAMINDA.docx";
+      link.click();
+    });
 };
