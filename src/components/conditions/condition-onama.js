@@ -148,7 +148,9 @@ const ConditionOnama = ({ formik, cities, handleLifeSentenceChange }) => {
             <div>
               <Form.Label>
                 <b>
-                  7- Mahkumiyet kararına konu olan suçlamalar nelerdir?
+                  7- Mahkumiyet kararına konu olan suçlamalar nelerdir? Birden
+                fazla seçebilirsiniz, eğer bunlardan farklı iddialar varsa
+                dilekçe örneğini indirdikten sonra ekleyebilirsiniz
                 </b>
               </Form.Label>
               </div>

@@ -2,7 +2,7 @@
 import React from "react";
 import { Form, Col, Row } from "react-bootstrap"; // Import other dependencies as required
 
-const ConditionSavcilik = ({ formik, cities, handleLifeSentenceChange }) => {
+const ConditionSavcilik = ({ formik, cities }) => {
   return (
     <div>
       <Form.Group as={Col} className="mb-4">
@@ -31,7 +31,7 @@ const ConditionSavcilik = ({ formik, cities, handleLifeSentenceChange }) => {
 
       <Form.Group as={Col} className="mb-4">
         <Form.Label>
-          <b>3- Tutukluluk durumunuzu seçiniz</b>
+          <b>Tutukluluk durumunuzu seçiniz</b>
         </Form.Label>
         <Form.Check
           type="radio"
@@ -73,6 +73,8 @@ const ConditionSavcilik = ({ formik, cities, handleLifeSentenceChange }) => {
         </Form.Control.Feedback>
       </Form.Group>
 
+      {formik.values.currentStatus === "Tutukluyum" && (
+      <>
       <Form.Group as={Col} className="mb-4">
         <Form.Label>
           <b>Sorgu tarihiniz?</b>
@@ -177,41 +179,93 @@ const ConditionSavcilik = ({ formik, cities, handleLifeSentenceChange }) => {
 
       <Form.Group as={Col} className="mb-4">
         <Form.Label>
-          <b>Savcılık'ta veya emniyette ifade verdiniz mi?</b>
+          <b>Hakkinizdaki temel suçlama</b>
         </Form.Label>
         <Form.Check
           type="radio"
-          label="İfade verdim"
-          name="prosecutionStatement"
-          value="İfade verdim"
-          checked={formik.values.prosecutionStatement === "İfade verdim"}
+          label="Terör örgütü üyeliği"
+          name="mainAccusation"
+          value="Terör örgütü üyeliği"
+          checked={formik.values.mainAccusation === "Terör örgütü üyeliği"}
           onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-
           isInvalid={
-            formik.touched.prosecutionStatement &&
-            !!formik.errors.prosecutionStatement
+            formik.touched.mainAccusation && !!formik.errors.mainAccusation
           }
         />
         <Form.Check
           type="radio"
-          label="Hic ifade vermedim"
-          name="prosecutionStatement"
-          value="Hic ifade vermedim"
-          checked={formik.values.prosecutionStatement === "Hic ifade vermedim"}
+          label="Terör örgütü yöneticiliği"
+          name="mainAccusation"
+          value="Terör örgütü yöneticiliği"
+          checked={formik.values.mainAccusation === "Terör örgütü yöneticiliği"}
           onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-
           isInvalid={
-            formik.touched.prosecutionStatement &&
-            !!formik.errors.prosecutionStatement
+            formik.touched.mainAccusation && !!formik.errors.mainAccusation
+          }
+        />
+        <Form.Check
+          type="radio"
+          label="Terör örgütüne yardım"
+          name="mainAccusation"
+          value="Terör örgütüne yardım"
+          checked={formik.values.mainAccusation === "Terör örgütüne yardım"}
+          onChange={formik.handleChange}
+          isInvalid={
+            formik.touched.mainAccusation && !!formik.errors.mainAccusation
           }
         />
         <Form.Control.Feedback type="invalid">
-          {formik.errors.prosecutionStatement}
+          {formik.errors.mainAccusation}
         </Form.Control.Feedback>
       </Form.Group>
 
+      <Form.Group as={Col} className="mb-4">
+          <div>
+            <Form.Label>
+              <b>
+                Soruşturma kapsamında yöneltilen suçlamalar nelerdir?
+              </b>
+            </Form.Label>
+          </div>
+          {[
+            "Bylock",
+            "Bank Asya",
+            "Sendika",
+            "Dernek",
+            "Sohbetlere katılma",
+            "Sohbet yapma",
+            "Gazete aboneliği",
+            "Dijitürk iptali",
+            "Tanık ifadesi",
+            "1 Dolar",
+            "Kimse Yok Mu",
+          ].map((accusation, index) => (
+            <Form.Check
+              key={index}
+              inline
+              type="checkbox"
+              style={{ marginRight: "40px" }}
+              label={accusation}
+              name="otherAccusations"
+              value={accusation}
+              checked={formik.values.otherAccusations.includes(accusation)}
+              onChange={formik.handleChange}
+              isInvalid={
+                formik.touched.otherAccusations &&
+                !!formik.errors.otherAccusations
+              }
+            />
+          ))}
+          <Form.Control.Feedback type="invalid">
+            {formik.errors.otherAccusations}
+          </Form.Control.Feedback>
+        </Form.Group>
+      </>
+    )}
+
+
+    {formik.values.currentStatus === "Tutukluydum ama tahliye edildim" && (
+      <>
       <Form.Group as={Col} className="mb-4">
         <Form.Label>
           <b>Hakkinizdaki temel suçlama</b>
@@ -253,14 +307,12 @@ const ConditionSavcilik = ({ formik, cities, handleLifeSentenceChange }) => {
           {formik.errors.mainAccusation}
         </Form.Control.Feedback>
       </Form.Group>
-      <div>
-        <Form.Group as={Col} className="mb-4">
+
+      <Form.Group as={Col} className="mb-4">
           <div>
             <Form.Label>
               <b>
-                Soruşturma kapsamında yöneltilen suçlamalar nelerdir? Birden
-                fazla seçebilirsiniz, eğer bunlardan farklı iddialar varsa
-                dilekçe örneğini indirdikten sonra ekleyebilirsiniz
+                Soruşturma kapsamında yöneltilen suçlamalar nelerdir?
               </b>
             </Form.Label>
           </div>
@@ -297,27 +349,137 @@ const ConditionSavcilik = ({ formik, cities, handleLifeSentenceChange }) => {
             {formik.errors.otherAccusations}
           </Form.Control.Feedback>
         </Form.Group>
-      </div>
+      </>
+    )}
 
+    {formik.values.currentStatus === "Hic tutuklanmadim" && (
+      <>
       <Form.Group as={Col} className="mb-4">
         <Form.Label>
-          <b>Yargıtay Onama kararı tarihini giriniz</b>
+          <b>Hakkinizdaki temel suçlama</b>
         </Form.Label>
-        <Form.Control
-          type="date"
-          name="confirmationDecisionDate"
-          style={{ width: "220px" }}
-          value={formik.values.confirmationDecisionDate}
+        <Form.Check
+          type="radio"
+          label="Terör örgütü üyeliği"
+          name="mainAccusation"
+          value="Terör örgütü üyeliği"
+          checked={formik.values.mainAccusation === "Terör örgütü üyeliği"}
           onChange={formik.handleChange}
           isInvalid={
-            formik.touched.confirmationDecisionDate &&
-            !!formik.errors.confirmationDecisionDate
+            formik.touched.mainAccusation && !!formik.errors.mainAccusation
+          }
+        />
+        <Form.Check
+          type="radio"
+          label="Terör örgütü yöneticiliği"
+          name="mainAccusation"
+          value="Terör örgütü yöneticiliği"
+          checked={formik.values.mainAccusation === "Terör örgütü yöneticiliği"}
+          onChange={formik.handleChange}
+          isInvalid={
+            formik.touched.mainAccusation && !!formik.errors.mainAccusation
+          }
+        />
+        <Form.Check
+          type="radio"
+          label="Terör örgütüne yardım"
+          name="mainAccusation"
+          value="Terör örgütüne yardım"
+          checked={formik.values.mainAccusation === "Terör örgütüne yardım"}
+          onChange={formik.handleChange}
+          isInvalid={
+            formik.touched.mainAccusation && !!formik.errors.mainAccusation
           }
         />
         <Form.Control.Feedback type="invalid">
-          {formik.errors.confirmationDecisionDate}
+          {formik.errors.mainAccusation}
         </Form.Control.Feedback>
       </Form.Group>
+      <Form.Group as={Col} className="mb-4">
+        <Form.Label>
+          <b>Savcılık'ta veya emniyette ifade verdiniz mi?</b>
+        </Form.Label>
+        <Form.Check
+          type="radio"
+          label="İfade verdim"
+          name="prosecutionStatement"
+          value="İfade verdim"
+          checked={formik.values.prosecutionStatement === "İfade verdim"}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+
+          isInvalid={
+            formik.touched.prosecutionStatement &&
+            !!formik.errors.prosecutionStatement
+          }
+        />
+        <Form.Check
+          type="radio"
+          label="Hic ifade vermedim"
+          name="prosecutionStatement"
+          value="Hic ifade vermedim"
+          checked={formik.values.prosecutionStatement === "Hic ifade vermedim"}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+
+          isInvalid={
+            formik.touched.prosecutionStatement &&
+            !!formik.errors.prosecutionStatement
+          }
+        />
+        <Form.Control.Feedback type="invalid">
+          {formik.errors.prosecutionStatement}
+        </Form.Control.Feedback>
+      </Form.Group>
+
+      {formik.values.prosecutionStatement === "İfade verdim" && (
+      <>
+      <Form.Group as={Col} className="mb-4">
+          <div>
+            <Form.Label>
+              <b>
+                Soruşturma kapsamında yöneltilen suçlamalar nelerdir?
+              </b>
+            </Form.Label>
+          </div>
+          {[
+            "Bylock",
+            "Bank Asya",
+            "Sendika",
+            "Dernek",
+            "Sohbetlere katılma",
+            "Sohbet yapma",
+            "Gazete aboneliği",
+            "Dijitürk iptali",
+            "Tanık ifadesi",
+            "1 Dolar",
+            "Kimse Yok Mu",
+          ].map((accusation, index) => (
+            <Form.Check
+              key={index}
+              inline
+              type="checkbox"
+              style={{ marginRight: "40px" }}
+              label={accusation}
+              name="otherAccusations"
+              value={accusation}
+              checked={formik.values.otherAccusations.includes(accusation)}
+              onChange={formik.handleChange}
+              isInvalid={
+                formik.touched.otherAccusations &&
+                !!formik.errors.otherAccusations
+              }
+            />
+          ))}
+          <Form.Control.Feedback type="invalid">
+            {formik.errors.otherAccusations}
+          </Form.Control.Feedback>
+        </Form.Group>
+      </>
+    )}
+
+      </>
+    )}
     </div>
   );
 };
