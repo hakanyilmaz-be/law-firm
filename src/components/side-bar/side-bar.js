@@ -16,14 +16,14 @@ const SideBar = () => {
          <Spacer/>
             <div className='step'>
                 <div><BsFill1CircleFill/></div>
-                <div className='desc-main'>Durumunuza uygun dilekçeyi sistemimizden seçmek</div>
+                <div className='desc-main'>Formda yer alan soruları cevaplayarak, durumunuza uygun hazırlanan dilekçeyi indiriniz.</div>
             </div>
             <Spacer/>
             <div className='arrow'><BsArrowDown/></div>
             <Spacer/>
             <div className='step'>
                 <div><BsFill2CircleFill/></div>
-                <div className='desc-main'>İsminiz ve dosya numarası gibi size ait bilgileri doldurmanız</div>
+                <div className='desc-main'>Dilekçeyi indirdikten sonra (adınız, dosya no) gibi sarıya boyalı bölümleri doldurunuz.</div>
             </div>
             <Spacer/>
 
@@ -31,7 +31,7 @@ const SideBar = () => {
             <Spacer/>
             <div className='step'>
                 <div><BsFill3CircleFill/></div>
-                <div className='desc-main'>Dosyanızın bulunduğu mahkemeye teslim etmeniz</div>
+                <div className='desc-main'>Dilekçenizi kontrol ettikten sonra imzalayarak, ek(ler)i ile birlikte ilgili makama teslim ediniz.</div>
             </div>
          </div>
 

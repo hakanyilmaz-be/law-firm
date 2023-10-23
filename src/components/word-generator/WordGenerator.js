@@ -22,7 +22,6 @@ export const handleGenerateDocument = (data) => {
         mainAccusation: data.mainAccusation,
         prisonSentence: prisonSentenceString, // Set this value instead
         confirmationDecisionDate: data.formattedConfirmationDecisionDate,
-
         adli: data.currentStatus,
 
         // ... other replacements
