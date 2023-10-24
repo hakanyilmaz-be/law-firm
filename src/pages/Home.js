@@ -9,7 +9,7 @@ import Spacer from "../components/spacer/spacer";
 import cities from "../assets/data/cities.json";
 import bamlist from "../assets/data/bam.json"
 import ConditionOnama from "../components/conditions/condition-onama.js";
-import ConditionSavcilik from "../components/conditions/condition-savcilik-tutuklu.js";
+import ConditionSavcilik from "../components/conditions/condition-savcilik.js";
 import Acm from "../components/conditions/acm.js";
 import Bam from "../components/conditions/bam.js";
 import Yargitay from "../components/conditions/yargitay.js";
@@ -36,6 +36,8 @@ const Home = () => {
     confirmData: false,
     isLifeSentence: false,
     prosecutionStatement: "",
+    queryDate:"",
+    detentionStatus:"",
   };
 
   const validationSchema = Yup.object({
@@ -44,10 +46,19 @@ const Home = () => {
       .oneOf(["primary", "dark"], "Geçersiz dosya türü seçildi"),
     fileStatus: Yup.string().required("Bu alanın doldurulması zorunludur"),
     confirmData: Yup.bool().oneOf([true], "Onaylamalısınız"),
-    currentStatus: Yup.string().when("fileStatus", (fileStatus, schema) => {
-      if (fileStatus)
-        return schema.required("Bu alanın doldurulması zorunludur");
-      return schema;
+    currentStatus: Yup.string().test('courtCity-required', 'Bu alanın doldurulması zorunludur', function(value) {
+      const fileStatus = this.parent.fileStatus;
+      if ( (fileStatus === 'onama' || fileStatus === 'aym' || fileStatus === 'aihm' || fileStatus === 'yargitaySav' || fileStatus === 'yargitayda' || fileStatus === 'acm' || fileStatus === 'bam') && !value) {
+        return false;
+      }
+      return true;
+    }),
+    detentionStatus: Yup.string().test('detentionStatus-required', 'Bu alanın doldurulması zorunludur', function(value) {
+      const fileStatus = this.parent.fileStatus;
+      if ( (fileStatus === 'savcilik') && !value) {
+        return false;
+      }
+      return true;
     }),
 
     courtCity: Yup.string().test('courtCity-required', 'Bu alanın doldurulması zorunludur', function(value) {
@@ -59,7 +70,7 @@ const Home = () => {
     }),
     convictionDate: Yup.date().test('convictionDate-required', 'Bu alanın doldurulması zorunludur', function(value) {
       const fileStatus = this.parent.fileStatus;
-      if ( (fileStatus === 'onama' || fileStatus === 'aym' || fileStatus === 'aihm' || fileStatus === 'savcilik' || fileStatus === 'bam' || fileStatus === 'yargitay') && !value) {
+      if ( (fileStatus === 'onama' || fileStatus === 'aym' || fileStatus === 'aihm' || fileStatus === 'bam' || fileStatus === 'yargitay') && !value) {
         return false;
       }
       return true;
@@ -94,8 +105,15 @@ const Home = () => {
       return true;
     }),
     prosecutionStatement:Yup.string().test('prosecutionStatement-required', 'Bu alanın doldurulması zorunludur', function(value) {
-      const fileStatus = this.parent.fileStatus;
-      if (fileStatus === 'savcilik' && !value) {
+      const detentionStatus = this.parent.detentionStatus;
+      if (detentionStatus === 'Hic tutuklanmadim' && !value) {
+        return false;
+      }
+      return true;
+    }),
+    queryDate:Yup.date().test('queryDate-required', 'Bu alanın doldurulması zorunludur', function(value) {
+      const detentionStatus = this.parent.detentionStatus;
+      if ( (detentionStatus === 'Tutukluyum') && !value) {
         return false;
       }
       return true;

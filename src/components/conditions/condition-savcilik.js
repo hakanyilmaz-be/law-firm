@@ -36,44 +36,44 @@ const ConditionSavcilik = ({ formik, cities }) => {
         <Form.Check
           type="radio"
           label="Tutukluyum"
-          name="currentStatus"
+          name="detentionStatus"
           value="Tutukluyum"
-          checked={formik.values.currentStatus === "Tutukluyum"}
+          checked={formik.values.detentionStatus === "Tutukluyum"}
           onChange={formik.handleChange}
           isInvalid={
-            formik.touched.currentStatus && !!formik.errors.currentStatus
+            formik.touched.detentionStatus && !!formik.errors.detentionStatus
           }
         />
         <Form.Check
           type="radio"
           label="Tutukluydum ama tahliye edildim"
-          name="currentStatus"
+          name="detentionStatus"
           value="Tutukluydum ama tahliye edildim"
           checked={
-            formik.values.currentStatus === "Tutukluydum ama tahliye edildim"
+            formik.values.detentionStatus === "Tutukluydum ama tahliye edildim"
           }
           onChange={formik.handleChange}
           isInvalid={
-            formik.touched.currentStatus && !!formik.errors.currentStatus
+            formik.touched.detentionStatus && !!formik.errors.detentionStatus
           }
         />
         <Form.Check
           type="radio"
           label="Hiç tutuklanmadim"
-          name="currentStatus"
+          name="detentionStatus"
           value="Hic tutuklanmadim"
-          checked={formik.values.currentStatus === "Hic tutuklanmadim"}
+          checked={formik.values.detentionStatus === "Hic tutuklanmadim"}
           onChange={formik.handleChange}
           isInvalid={
-            formik.touched.currentStatus && !!formik.errors.currentStatus
+            formik.touched.detentionStatus && !!formik.errors.detentionStatus
           }
         />
         <Form.Control.Feedback type="invalid">
-          {formik.errors.currentStatus}
+          {formik.errors.detentionStatus}
         </Form.Control.Feedback>
       </Form.Group>
 
-      {formik.values.currentStatus === "Tutukluyum" && (
+      {formik.values.detentionStatus === "Tutukluyum" && (
       <>
       <Form.Group as={Col} className="mb-4">
         <Form.Label>
@@ -81,16 +81,16 @@ const ConditionSavcilik = ({ formik, cities }) => {
         </Form.Label>
         <Form.Control
           type="date"
-          name="convictionDate"
+          name="queryDate"
           style={{ width: "220px" }}
-          value={formik.values.convictionDate}
+          value={formik.values.queryDate}
           onChange={formik.handleChange}
           isInvalid={
-            formik.touched.convictionDate && !!formik.errors.convictionDate
+            formik.touched.queryDate && !!formik.errors.queryDate
           }
         />
         <Form.Control.Feedback type="invalid">
-          {formik.errors.convictionDate}
+          {formik.errors.queryDate}
         </Form.Control.Feedback>
       </Form.Group>
 
@@ -264,7 +264,7 @@ const ConditionSavcilik = ({ formik, cities }) => {
     )}
 
 
-    {formik.values.currentStatus === "Tutukluydum ama tahliye edildim" && (
+    {formik.values.detentionStatus === "Tutukluydum ama tahliye edildim" && (
       <>
       <Form.Group as={Col} className="mb-4">
         <Form.Label>
@@ -352,7 +352,7 @@ const ConditionSavcilik = ({ formik, cities }) => {
       </>
     )}
 
-    {formik.values.currentStatus === "Hic tutuklanmadim" && (
+    {formik.values.detentionStatus === "Hic tutuklanmadim" && (
       <>
       <Form.Group as={Col} className="mb-4">
         <Form.Label>
