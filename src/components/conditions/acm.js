@@ -6,7 +6,7 @@ const Acm = ({ formik, cities }) => {
         <div>
           <Form.Group as={Col} className="mb-4">
             <Form.Label>
-              <b>Soruşturma hangi İl Savcılığında yürütülüyor? Seçiniz</b>
+              <b>Dosyanız hangi İl Ağır Ceza Mahkemesince yürütülüyor? Seçiniz</b>
             </Form.Label>
             <Form.Control
               as="select"

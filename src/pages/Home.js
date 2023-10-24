@@ -49,40 +49,50 @@ const Home = () => {
         return schema.required("Bu alanın doldurulması zorunludur");
       return schema;
     }),
-    courtCity: Yup.string().when("fileStatus", (fileStatus, schema) => {
-      if (fileStatus)
-        return schema.required("Bu alanın doldurulması zorunludur");
-      return schema;
-    }),
-    convictionDate: Yup.date().test('convictionDate-required', 'Bu alanın doldurulması zorunludur', function(value) {
+
+    courtCity: Yup.string().test('courtCity-required', 'Bu alanın doldurulması zorunludur', function(value) {
       const fileStatus = this.parent.fileStatus;
-      if (fileStatus === 'onama' && !value) {
+      if ( (fileStatus === 'onama' || fileStatus === 'aym' || fileStatus === 'aihm' || fileStatus === 'savcilik' || fileStatus === 'acm' || fileStatus === 'bam') && !value) {
         return false;
       }
       return true;
     }),
+    convictionDate: Yup.date().test('convictionDate-required', 'Bu alanın doldurulması zorunludur', function(value) {
+      const fileStatus = this.parent.fileStatus;
+      if ( (fileStatus === 'onama' || fileStatus === 'aym' || fileStatus === 'aihm' || fileStatus === 'savcilik' || fileStatus === 'bam' || fileStatus === 'yargitay') && !value) {
+        return false;
+      }
+      return true;
+    }), 
     
     mainAccusation: Yup.string().required("Bu alanın doldurulması zorunludur"),
     otherAccusations: Yup.array().min(1, "En az bir suçlama seçmelisiniz"),
     prisonDuration: Yup.object().test(
       "prison-duration-validation",
       "You must specify a duration or select life sentence",
-      function (value) {
-        const isLifeSentence = this.parent.isLifeSentence;
-
-        // If life sentence is checked, then the validation should pass
-        if (isLifeSentence) {
-          return true;
+      function(value) {
+        const fileStatus = this.parent.fileStatus;
+        if (fileStatus === 'acm' || fileStatus === 'savcilik') {
+          return true;  // always valid if fileStatus is 'acm' or 'savcilik'
         }
-
-        // Otherwise, check if at least one of the fields in prisonDuration has a value
-        return value.days || value.months || value.years;
+    
+        const isLifeSentence = this.parent.isLifeSentence;
+        if (isLifeSentence) {
+          return true;  // valid if life sentence is checked
+        }
+    
+        return value.days || value.months || value.years;  // otherwise, at least one value should be present
       }
     ),
+    
     isLifeSentence: Yup.bool(),
-    confirmationDecisionDate: Yup.date().required(
-      "Bu alanın doldurulması zorunludur"
-    ),
+    confirmationDecisionDate: Yup.date().test('confirmationDecisionDate-required', 'Bu alanın doldurulması zorunludur', function(value) {
+      const fileStatus = this.parent.fileStatus;
+      if ( (fileStatus === 'onama' || fileStatus === 'aym' || fileStatus === 'aihm') && !value) {
+        return false;
+      }
+      return true;
+    }),
     prosecutionStatement:Yup.string().test('prosecutionStatement-required', 'Bu alanın doldurulması zorunludur', function(value) {
       const fileStatus = this.parent.fileStatus;
       if (fileStatus === 'savcilik' && !value) {

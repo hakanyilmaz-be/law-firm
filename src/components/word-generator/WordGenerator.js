@@ -12,16 +12,16 @@ export const handleGenerateDocument = (data) => {
       let prisonSentenceString;
 
       if (data.isLifeSentence) {
-        prisonSentenceString = "Müebbet"; // Life Sentence in Turkish
+        prisonSentenceString = "Müebbet"; 
       } else {
-        prisonSentenceString = data.formattedPrisonDuration; // Use your prison duration string here
+        prisonSentenceString = data.formattedPrisonDuration; 
       }
       doc.setData({
         courtCity: data.courtCity,
         otherAccusations: data.otherAccusations,
         mainAccusation: data.mainAccusation,
-        prisonSentence: prisonSentenceString, // Set this value instead
-        confirmationDecisionDate: data.formattedConfirmationDecisionDate,
+      prisonSentence: prisonSentenceString, 
+       confirmationDecisionDate: data.formattedConfirmationDecisionDate,
         adli: data.currentStatus,
 
         // ... other replacements
