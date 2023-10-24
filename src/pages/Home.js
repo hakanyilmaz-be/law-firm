@@ -7,8 +7,12 @@ import "./home-page.css";
 import { Button } from "react-bootstrap";
 import Spacer from "../components/spacer/spacer";
 import cities from "../assets/data/cities.json";
+import bamlist from "../assets/data/bam.json"
 import ConditionOnama from "../components/conditions/condition-onama.js";
 import ConditionSavcilik from "../components/conditions/condition-savcilik-tutuklu.js";
+import Acm from "../components/conditions/acm.js";
+import Bam from "../components/conditions/bam.js";
+import Yargitay from "../components/conditions/yargitay.js";
 
 const Home = () => {
   const handleButtonClick = (type) => {
@@ -172,19 +176,19 @@ const Home = () => {
       label: "Savcılık soruşturması devam ediyor",
     },
     {
-      value: "Ağır Ceza Mahkemesi'nde yargılama devam ediyor",
+      value: "acm",
       label: "Ağır Ceza Mahkemesi'nde yargılama devam ediyor",
     },
     {
-      value: "Dosyam Bölge Adliye Mahkemesi'nde",
+      value: "bam",
       label: "Dosyam Bölge Adliye Mahkemesi'nde",
     },
     {
-      value: "Dosyam Yargıtay Savcılığı'nda",
+      value: "yargitaySav",
       label: "Dosyam Yargıtay Savcılığı'nda",
     },
     {
-      value: "Dosyam Yargıtay 3.Ceza Dairesi'nde",
+      value: "yargitayda",
       label: "Dosyam Yargıtay 3.Ceza Dairesi'nde",
     },
     {
@@ -285,9 +289,38 @@ const Home = () => {
               <ConditionSavcilik
                 formik={formik}
                 cities={cities}
+              />
+            )}
+
+            {["acm"].includes(
+              formik.values.fileStatus
+            ) && (
+              <Acm
+                formik={formik}
+                cities={cities}
+              />
+            )}
+
+            {["bam"].includes(
+              formik.values.fileStatus
+            ) && (
+              <Bam
+                formik={formik}
+                bamlist={bamlist}
+                handleLifeSentenceChange={handleLifeSentenceChange}
+
+              />
+            )}
+
+            {["yargitaySav", "yargitayda"].includes(
+              formik.values.fileStatus
+            ) && (
+              <Yargitay
+                formik={formik}
                 handleLifeSentenceChange={handleLifeSentenceChange}
               />
             )}
+
             {/* Diğer soru gruplarını burada ekleyebilirsiniz. */}
           </>
         )}

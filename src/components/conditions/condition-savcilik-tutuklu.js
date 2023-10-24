@@ -1,6 +1,6 @@
 // ConditionalForm.js
 import React from "react";
-import { Form, Col, Row } from "react-bootstrap"; // Import other dependencies as required
+import { Form, Col, Row } from "react-bootstrap"; 
 
 const ConditionSavcilik = ({ formik, cities }) => {
   return (
