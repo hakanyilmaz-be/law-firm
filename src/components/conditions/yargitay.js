@@ -187,31 +187,32 @@ const Yargitay = ({ formik, handleLifeSentenceChange }) => {
         <Form.Check
           type="radio"
           label="Tutukluyum"
-          name="currentStatus"
+          name="currentStatusSupCourt"
           value="Tutukluyum"
-          checked={formik.values.currentStatus === "Tutukluyum"}
+          checked={formik.values.currentStatusSupCourt === "Tutukluyum"}
           onChange={formik.handleChange}
           isInvalid={
-            formik.touched.currentStatus && !!formik.errors.currentStatus
+            formik.touched.currentStatusSupCourt && !!formik.errors.currentStatusSupCourt
           }
         />
 
         <Form.Check
           type="radio"
           label="Serbestim"
-          name="currentStatus"
+          name="currentStatusSupCourt"
           value="Serbestim"
-          checked={formik.values.currentStatus === "Serbestim"}
+          checked={formik.values.currentStatusSupCourt === "Serbestim"}
           onChange={formik.handleChange}
           isInvalid={
-            formik.touched.currentStatus && !!formik.errors.currentStatus
+            formik.touched.currentStatusSupCourt && !!formik.errors.currentStatusSupCourt
           }
         />
         <Form.Control.Feedback type="invalid">
-          {formik.errors.currentStatus}
+          {formik.errors.currentStatusSupCourt}
         </Form.Control.Feedback>
       </Form.Group>
-      {formik.values.currentStatus === "Tutukluyum" && (
+      
+      {formik.values.currentStatusSupCourt === "Tutukluyum" && (
         <>
           <Form.Group as={Col} className="mb-4">
             <Form.Label>
@@ -219,16 +220,16 @@ const Yargitay = ({ formik, handleLifeSentenceChange }) => {
             </Form.Label>
             <Form.Control
               type="date"
-              name="convictionDate"
+              name="convictionDateSupCourt"
               style={{ width: "220px" }}
-              value={formik.values.convictionDate}
+              value={formik.values.convictionDateSupCourt}
               onChange={formik.handleChange}
               isInvalid={
-                formik.touched.convictionDate && !!formik.errors.convictionDate
+                formik.touched.convictionDateSupCourt && !!formik.errors.convictionDateSupCourt
               }
             />
             <Form.Control.Feedback type="invalid">
-              {formik.errors.convictionDate}
+              {formik.errors.convictionDateSupCourt}
             </Form.Control.Feedback>
           </Form.Group>
         </>

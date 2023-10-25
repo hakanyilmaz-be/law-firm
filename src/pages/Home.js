@@ -38,6 +38,8 @@ const Home = () => {
     prosecutionStatement: "",
     queryDate:"",
     detentionStatus:"",
+    currentStatusSupCourt:"",
+    convictionDateSupCourt:"",
   };
 
   const validationSchema = Yup.object({
@@ -48,7 +50,7 @@ const Home = () => {
     confirmData: Yup.bool().oneOf([true], "Onaylamalısınız"),
     currentStatus: Yup.string().test('courtCity-required', 'Bu alanın doldurulması zorunludur', function(value) {
       const fileStatus = this.parent.fileStatus;
-      if ( (fileStatus === 'onama' || fileStatus === 'aym' || fileStatus === 'aihm' || fileStatus === 'yargitaySav' || fileStatus === 'yargitayda' || fileStatus === 'acm' || fileStatus === 'bam') && !value) {
+      if ( (fileStatus === 'onama' || fileStatus === 'aym' || fileStatus === 'aihm' || fileStatus === 'acm' || fileStatus === 'bam') && !value) {
         return false;
       }
       return true;
@@ -70,7 +72,7 @@ const Home = () => {
     }),
     convictionDate: Yup.date().test('convictionDate-required', 'Bu alanın doldurulması zorunludur', function(value) {
       const fileStatus = this.parent.fileStatus;
-      if ( (fileStatus === 'onama' || fileStatus === 'aym' || fileStatus === 'aihm' || fileStatus === 'bam' || fileStatus === 'yargitay') && !value) {
+      if ( (fileStatus === 'onama' || fileStatus === 'aym' || fileStatus === 'aihm' || fileStatus === 'bam') && !value) {
         return false;
       }
       return true;
@@ -114,6 +116,20 @@ const Home = () => {
     queryDate:Yup.date().test('queryDate-required', 'Bu alanın doldurulması zorunludur', function(value) {
       const detentionStatus = this.parent.detentionStatus;
       if ( (detentionStatus === 'Tutukluyum') && !value) {
+        return false;
+      }
+      return true;
+    }),
+    currentStatusSupCourt:Yup.string().test('currentStatusSupCourt-required', 'Bu alanın doldurulması zorunludur', function(value) {
+      const fileStatus = this.parent.fileStatus;
+      if ( (fileStatus === 'yargitayda' || fileStatus === 'yargitaySav') && !value) {
+        return false;
+      }
+      return true;
+    }),
+    convictionDateSupCourt:Yup.date().test('convictionDateSupCourt-required', 'Bu alanın doldurulması zorunludur', function(value) {
+      const currentStatusSupCourt = this.parent.currentStatusSupCourt;
+      if ( (currentStatusSupCourt === 'Tutukluyum') && !value) {
         return false;
       }
       return true;
@@ -174,6 +190,9 @@ const Home = () => {
     // Format the date value
     processedValues.formattedConfirmationDecisionDate = formatDate(
       processedValues.confirmationDecisionDate
+    );
+    processedValues.formattedConvictionDateSupCourt = formatDate(
+      processedValues.convictionDateSupCourt
     );
 
     console.log(processedValues);
@@ -311,7 +330,7 @@ const Home = () => {
               />
             )}
 
-            {["savcilik", "savciliktutuklu"].includes(
+            {["savcilik"].includes(
               formik.values.fileStatus
             ) && (
               <ConditionSavcilik
