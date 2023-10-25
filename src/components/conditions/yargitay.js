@@ -185,7 +185,7 @@ const Yargitay = ({ formik, handleLifeSentenceChange }) => {
           <b>Tutukluluk durumunuzu seçiniz</b>
         </Form.Label>
         <Form.Check
-          type="radio"
+          type="radio" 
           label="Tutukluyum"
           name="currentStatusSupCourt"
           value="Tutukluyum"

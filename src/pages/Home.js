@@ -40,6 +40,8 @@ const Home = () => {
     detentionStatus:"",
     currentStatusSupCourt:"",
     convictionDateSupCourt:"",
+    currentStatusBam:"",
+    convictionDateBam:"",
   };
 
   const validationSchema = Yup.object({
@@ -50,7 +52,7 @@ const Home = () => {
     confirmData: Yup.bool().oneOf([true], "Onaylamalısınız"),
     currentStatus: Yup.string().test('courtCity-required', 'Bu alanın doldurulması zorunludur', function(value) {
       const fileStatus = this.parent.fileStatus;
-      if ( (fileStatus === 'onama' || fileStatus === 'aym' || fileStatus === 'aihm' || fileStatus === 'acm' || fileStatus === 'bam') && !value) {
+      if ( (fileStatus === 'onama' || fileStatus === 'aym' || fileStatus === 'aihm' || fileStatus === 'acm') && !value) {
         return false;
       }
       return true;
@@ -72,7 +74,7 @@ const Home = () => {
     }),
     convictionDate: Yup.date().test('convictionDate-required', 'Bu alanın doldurulması zorunludur', function(value) {
       const fileStatus = this.parent.fileStatus;
-      if ( (fileStatus === 'onama' || fileStatus === 'aym' || fileStatus === 'aihm' || fileStatus === 'bam') && !value) {
+      if ( (fileStatus === 'onama' || fileStatus === 'aym' || fileStatus === 'aihm') && !value) {
         return false;
       }
       return true;
@@ -134,6 +136,20 @@ const Home = () => {
       }
       return true;
     }),
+    currentStatusBam:Yup.string().test('currentStatusBam-required', 'Bu alanın doldurulması zorunludur', function(value) {
+      const fileStatus = this.parent.fileStatus;
+      if ( (fileStatus === 'bam') && !value) {
+        return false;
+      }
+      return true;
+    }),
+    convictionDateBam:Yup.date().test('convictionDateBam-required', 'Bu alanın doldurulması zorunludur', function(value) {
+      const currentStatusBam = this.parent.currentStatusBam;
+      if ( (currentStatusBam === 'Tutukluyum') && !value) {
+        return false;
+      }
+      return true;
+    }),
   });
 
   const formatPrisonDuration = (duration) => {
@@ -191,8 +207,14 @@ const Home = () => {
     processedValues.formattedConfirmationDecisionDate = formatDate(
       processedValues.confirmationDecisionDate
     );
+    processedValues.formattedConvictionDate = formatDate(
+      processedValues.convictionDate
+    );
     processedValues.formattedConvictionDateSupCourt = formatDate(
       processedValues.convictionDateSupCourt
+    );
+    processedValues.formattedConvictionDateBam = formatDate(
+      processedValues.convictionDateBam
     );
 
     console.log(processedValues);

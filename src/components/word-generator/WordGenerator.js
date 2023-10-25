@@ -65,18 +65,29 @@ export const handleGenerateDocument = (data) => {
         prisonSentenceString = data.formattedPrisonDuration;
       }
 
-      let tahliyeText = "";
-      let tutuklulukText = "";
+      let yargitayTahliyeText = "";
+      let yargitayTutuklulukText = "";
+      let bamTahliye = "";
+      let bamTutuklulukText = "";
 
       if (
         (data.fileStatus === "yargitayda" || data.fileStatus === "yargitaySav") && data.currentStatusSupCourt === "Tutukluyum"
       ) {
-        tahliyeText = "TAHLİYE ve ";
-        tutuklulukText = `Bu suçlama gerekçe gösterilerek de ${data.formattedConvictionDateSupCourt} tarihinde tutuklandım ve halen tutukluluğum devam ediyor.`;
+        yargitayTahliyeText = "TAHLİYE ve ";
+        yargitayTutuklulukText = `Bu suçlama gerekçe gösterilerek de ${data.formattedConvictionDateSupCourt} tarihinde tutuklandım ve halen tutukluluğum devam ediyor.`;
+      }
+
+
+      if (
+        data.fileStatus === "bam" && data.currentStatusBam === "Tutukluyum"
+      ) {
+        bamTahliye = "TAHLİYE ve ";
+        bamTutuklulukText = `Bu suçlama gerekçe gösterilerek de ${data.formattedConvictionDateBam} tarihinde tutuklandım ve halen tutukluluğum devam ediyor.`;
       }
 
       doc.setData({
         courtCity: data.courtCity,
+        convictionDate:data.formattedConvictionDate,
         otherAccusations: data.otherAccusations,
         mainAccusation: data.mainAccusation,
         prisonSentence: prisonSentenceString,
@@ -84,9 +95,14 @@ export const handleGenerateDocument = (data) => {
         adli: data.currentStatus,
         currentStatusSupCourt: data.currentStatusSupCourt,
         convictionDateSupCourt: data.formattedConvictionDateSupCourt,
-        // ... other data fields
-        tahliyeStatus: tahliyeText,
-        tutuklulukStatus: tutuklulukText
+        currentStatusBam:data.currentStatusBam,
+        convictionDateBam:data.formattedConvictionDateBam,
+      
+        tahliyeStatus: yargitayTahliyeText,
+        tutuklulukStatus: yargitayTutuklulukText,
+        bamTahliyeStatus: bamTahliye,
+        bamTutuklulukStatus: bamTutuklulukText,
+
       });
 
       try {

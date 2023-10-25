@@ -211,47 +211,47 @@ const Bam = ({ formik, bamlist, handleLifeSentenceChange }) => {
         <Form.Check
           type="radio"
           label="Tutukluyum"
-          name="currentStatus"
+          name="currentStatusBam"
           value="Tutukluyum"
-          checked={formik.values.currentStatus === "Tutukluyum"}
+          checked={formik.values.currentStatusBam === "Tutukluyum"}
           onChange={formik.handleChange}
           isInvalid={
-            formik.touched.currentStatus && !!formik.errors.currentStatus
+            formik.touched.currentStatusBam && !!formik.errors.currentStatusBam
           }
         />
 
         <Form.Check
           type="radio"
           label="Serbestim"
-          name="currentStatus"
+          name="currentStatusBam"
           value="Serbestim"
-          checked={formik.values.currentStatus === "Serbestim"}
+          checked={formik.values.currentStatusBam === "Serbestim"}
           onChange={formik.handleChange}
           isInvalid={
-            formik.touched.currentStatus && !!formik.errors.currentStatus
+            formik.touched.currentStatusBam && !!formik.errors.currentStatusBam
           }
         />
         <Form.Control.Feedback type="invalid">
-          {formik.errors.currentStatus}
+          {formik.errors.currentStatusBam}
         </Form.Control.Feedback>
       </Form.Group>
-      {formik.values.currentStatus === "Tutukluyum" && <>
+      {formik.values.currentStatusBam === "Tutukluyum" && <>
       <Form.Group as={Col} className="mb-4">
         <Form.Label>
           <b>Tutuklanma tarihiniz?</b>
         </Form.Label>
         <Form.Control
           type="date"
-          name="convictionDate"
+          name="convictionDateBam"
           style={{ width: "220px" }}
-          value={formik.values.convictionDate}
+          value={formik.values.convictionDateBam}
           onChange={formik.handleChange}
           isInvalid={
-            formik.touched.convictionDate && !!formik.errors.convictionDate
+            formik.touched.convictionDateBam && !!formik.errors.convictionDateBam
           }
         />
         <Form.Control.Feedback type="invalid">
-          {formik.errors.convictionDate}
+          {formik.errors.convictionDateBam}
         </Form.Control.Feedback>
       </Form.Group>
       </>}
