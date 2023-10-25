@@ -42,6 +42,8 @@ const Home = () => {
     convictionDateSupCourt:"",
     currentStatusBam:"",
     convictionDateBam:"",
+    currentStatusAcm:"",
+    convictionDateAcm:"",
   };
 
   const validationSchema = Yup.object({
@@ -52,7 +54,7 @@ const Home = () => {
     confirmData: Yup.bool().oneOf([true], "Onaylamalısınız"),
     currentStatus: Yup.string().test('courtCity-required', 'Bu alanın doldurulması zorunludur', function(value) {
       const fileStatus = this.parent.fileStatus;
-      if ( (fileStatus === 'onama' || fileStatus === 'aym' || fileStatus === 'aihm' || fileStatus === 'acm') && !value) {
+      if ( (fileStatus === 'onama' || fileStatus === 'aym' || fileStatus === 'aihm') && !value) {
         return false;
       }
       return true;
@@ -150,6 +152,20 @@ const Home = () => {
       }
       return true;
     }),
+    currentStatusAcm:Yup.string().test('currentStatusAcm-required', 'Bu alanın doldurulması zorunludur', function(value) {
+      const fileStatus = this.parent.fileStatus;
+      if ( (fileStatus === 'acm') && !value) {
+        return false;
+      }
+      return true;
+    }),
+    convictionDateAcm:Yup.date().test('convictionDateAcm-required', 'Bu alanın doldurulması zorunludur', function(value) {
+      const currentStatusAcm = this.parent.currentStatusAcm;
+      if ( (currentStatusAcm === 'Tutukluyum') && !value) {
+        return false;
+      }
+      return true;
+    }),
   });
 
   const formatPrisonDuration = (duration) => {
@@ -215,6 +231,9 @@ const Home = () => {
     );
     processedValues.formattedConvictionDateBam = formatDate(
       processedValues.convictionDateBam
+    );
+    processedValues.formattedConvictionDateAcm = formatDate(
+      processedValues.convictionDateAcm
     );
 
     console.log(processedValues);

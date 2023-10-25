@@ -29,36 +29,56 @@ const Acm = ({ formik, cities }) => {
           </Form.Group>
     
           <Form.Group as={Col} className="mb-4">
-            <Form.Label>
-              <b>Tutukluluk durumunuzu seçiniz</b>
-            </Form.Label>
-            <Form.Check
-              type="radio"
-              label="Tutukluyum"
-              name="currentStatus"
-              value="Tutukluyum"
-              checked={formik.values.currentStatus === "Tutukluyum"}
-              onChange={formik.handleChange}
-              isInvalid={
-                formik.touched.currentStatus && !!formik.errors.currentStatus
-              }
-            />
-            
-            <Form.Check
-              type="radio"
-              label="Serbestim"
-              name="currentStatus"
-              value="Serbestim"
-              checked={formik.values.currentStatus === "Serbestim"}
-              onChange={formik.handleChange}
-              isInvalid={
-                formik.touched.currentStatus && !!formik.errors.currentStatus
-              }
-            />
-            <Form.Control.Feedback type="invalid">
-              {formik.errors.currentStatus}
-            </Form.Control.Feedback>
-          </Form.Group>
+        <Form.Label>
+          <b>Tutukluluk durumunuzu seçiniz</b>
+        </Form.Label>
+        <Form.Check
+          type="radio"
+          label="Tutukluyum"
+          name="currentStatusAcm"
+          value="Tutukluyum"
+          checked={formik.values.currentStatusAcm === "Tutukluyum"}
+          onChange={formik.handleChange}
+          isInvalid={
+            formik.touched.currentStatusAcm && !!formik.errors.currentStatusAcm
+          }
+        />
+
+        <Form.Check
+          type="radio"
+          label="Serbestim"
+          name="currentStatusAcm"
+          value="Serbestim"
+          checked={formik.values.currentStatusAcm === "Serbestim"}
+          onChange={formik.handleChange}
+          isInvalid={
+            formik.touched.currentStatusAcm && !!formik.errors.currentStatusAcm
+          }
+        />
+        <Form.Control.Feedback type="invalid">
+          {formik.errors.currentStatusAcm}
+        </Form.Control.Feedback>
+      </Form.Group>
+      {formik.values.currentStatusAcm === "Tutukluyum" && <>
+      <Form.Group as={Col} className="mb-4">
+        <Form.Label>
+          <b>Tutuklanma tarihiniz?</b>
+        </Form.Label>
+        <Form.Control
+          type="date"
+          name="convictionDateAcm"
+          style={{ width: "220px" }}
+          value={formik.values.convictionDateAcm}
+          onChange={formik.handleChange}
+          isInvalid={
+            formik.touched.convictionDateAcm && !!formik.errors.convictionDateAcm
+          }
+        />
+        <Form.Control.Feedback type="invalid">
+          {formik.errors.convictionDateAcm}
+        </Form.Control.Feedback>
+      </Form.Group>
+      </>}
 
           <Form.Group as={Col} className="mb-4">
             <Form.Label>
