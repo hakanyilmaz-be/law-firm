@@ -415,7 +415,7 @@ const ConditionSavcilik = ({ formik, cities }) => {
         />
         <Form.Check
           type="radio"
-          label="Hic ifade vermedim"
+          label="Hiç ifade vermedim"
           name="prosecutionStatement"
           value="Hic ifade vermedim"
           checked={formik.values.prosecutionStatement === "Hic ifade vermedim"}

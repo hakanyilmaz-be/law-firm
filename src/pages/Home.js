@@ -81,9 +81,23 @@ const Home = () => {
       }
       return true;
     }), 
-    
     mainAccusation: Yup.string().required("Bu alanın doldurulması zorunludur"),
-    otherAccusations: Yup.array().min(1, "En az bir suçlama seçmelisiniz"),
+    //otherAccusations: Yup.array().min(1, "En az bir suçlama seçmelisiniz"),
+    otherAccusations: Yup.array().test(
+      'otherAccusations-condition',
+      "En az bir suçlama seçmelisiniz",
+      function (value) {
+          const { fileStatus, prosecutionStatement } = this.parent;
+  
+          // If the condition you specified is met, then the field isn't required.
+          if (fileStatus === "savcilik" && prosecutionStatement === "Hic ifade vermedim") {
+              return true; // validation passes
+          }
+  
+          // Otherwise, ensure the array has at least one item.
+          return value && value.length > 0;
+      }
+  ),  
     prisonDuration: Yup.object().test(
       "prison-duration-validation",
       "You must specify a duration or select life sentence",

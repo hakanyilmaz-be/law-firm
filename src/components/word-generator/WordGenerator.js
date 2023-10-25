@@ -71,6 +71,7 @@ export const handleGenerateDocument = (data) => {
       let bamTutuklulukText = "";
       let acmTahliye = "";
       let acmTutuklulukText = "";
+      let prosecutionStatementText="";
 
       if (
         (data.fileStatus === "yargitayda" || data.fileStatus === "yargitaySav") && data.currentStatusSupCourt === "Tutukluyum"
@@ -94,6 +95,13 @@ export const handleGenerateDocument = (data) => {
         acmTutuklulukText = `Bu suçlama gerekçe gösterilerek de ${data.formattedConvictionDateAcm} tarihinde tutuklandım ve halen tutukluluğum devam ediyor.`;
       }
 
+      if (
+        data.fileStatus === "savcilik" && data.prosecutionStatement === "İfade verdim"
+      ) {
+      
+        prosecutionStatementText = `Soruşturma kapsamında, ${data.otherAccusations} nedenleri gerekçe gösterilerek hakkımda soruşturma yürütülmektedir.`;
+      }
+
       doc.setData({
         courtCity: data.courtCity,
         convictionDate:data.formattedConvictionDate,
@@ -114,7 +122,7 @@ export const handleGenerateDocument = (data) => {
         bamTutuklulukStatus: bamTutuklulukText,
         acmTahliyeStatus: acmTahliye,
         acmTutuklulukStatus: acmTutuklulukText,
-
+        prosecutionStatementTextData:prosecutionStatementText,
       });
 
       try {
