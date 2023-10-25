@@ -7,7 +7,7 @@ import "./home-page.css";
 import { Button } from "react-bootstrap";
 import Spacer from "../components/spacer/spacer";
 import cities from "../assets/data/cities.json";
-import bamlist from "../assets/data/bam.json"
+import bamlist from "../assets/data/bam.json";
 import ConditionOnama from "../components/conditions/condition-onama.js";
 import ConditionSavcilik from "../components/conditions/condition-savcilik.js";
 import Acm from "../components/conditions/acm.js";

@@ -72,6 +72,11 @@ export const handleGenerateDocument = (data) => {
       let acmTahliye = "";
       let acmTutuklulukText = "";
       let prosecutionStatementText="";
+      let prosecutionOtherAccusations="";
+      let prosecutionOtherAccusations2="";
+      let prosecutionText="";
+      let prosecutionStatus="";
+
 
       if (
         (data.fileStatus === "yargitayda" || data.fileStatus === "yargitaySav") && data.currentStatusSupCourt === "Tutukluyum"
@@ -102,6 +107,22 @@ export const handleGenerateDocument = (data) => {
         prosecutionStatementText = `Soruşturma kapsamında, ${data.otherAccusations} nedenleri gerekçe gösterilerek hakkımda soruşturma yürütülmektedir.`;
       }
 
+      if (
+       data.fileStatus === "savcilik" && data.detentionStatus === "Tutukluydum ama tahliye edildim"
+      ) {
+      
+        prosecutionOtherAccusations = `Soruşturma kapsamında, ${data.otherAccusations} nedenleri gerekçe gösterilerek hakkımda soruşturma yürütülmektedir.`;
+      }
+
+      if (
+        (data.fileStatus === "savcilik" && data.detentionStatus === "Tutukluyum") || (data.fileStatus === "savcilik" && data.detentionStatus === "Tutukluydum ama tahliye edildim")
+       ) {
+       
+         prosecutionOtherAccusations2 = `Soruşturma kapsamında, ${data.otherAccusations} nedenleri gerekçe gösterilerek hakkımda soruşturma yürütülmektedir.`;
+         prosecutionText = "Soruşturma kapsamında tutuklandım. ";
+         prosecutionStatus=" ve Serbest Bırakma";
+       }
+
       doc.setData({
         courtCity: data.courtCity,
         convictionDate:data.formattedConvictionDate,
@@ -123,6 +144,10 @@ export const handleGenerateDocument = (data) => {
         acmTahliyeStatus: acmTahliye,
         acmTutuklulukStatus: acmTutuklulukText,
         prosecutionStatementTextData:prosecutionStatementText,
+        prosecutionOtherAccusationsData:prosecutionOtherAccusations,
+        prosecutionOtherAccusations2Data:prosecutionOtherAccusations2,
+        prosecutionTextData: prosecutionText,
+        prosecutionStatusData: prosecutionStatus,
       });
 
       try {
