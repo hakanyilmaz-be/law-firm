@@ -1,61 +1,70 @@
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 
-const getTemplateName = (fileStatus) => {
-  switch (fileStatus) {
-    case "onama":
-      return "onama.docx";
-    case "aym":
-      return "onama.docx";
-    case "aihm":
-      return "onama.docx";
-    case "savcilik":
-      return "savcilik.docx";
-    case "acm":
-      return "acm.docx";
-    case "bam":
-      return "bam.docx";
-    case "yargitaySav":
-      return "yargitay.docx";
-    case "yargitayda":
-      return "yargitay.docx";
-      default:
-      return "";
-  }
+function processAccusations(accusations) {
+    const lowercaseValues = ["sendika", "dernek", "sohbetlere katılma", "sohbet yapma", "gazete aboneliği", "tanık ifadesi", "1 dolar"];
+    return accusations.map(value => {
+        if (lowercaseValues.includes(value.toLowerCase())) {
+            return value.toLowerCase();
+        }
+        return value;
+    });
+}
+
+const getTemplateName = (fileStatus, detentionStatus) => {
+    switch (fileStatus) {
+        case "onama":
+        case "aym":
+        case "aihm": return ["onama.docx"];
+        case "savcilik":
+            if (detentionStatus === "Tutukluyum") {
+                return ["savcilik.docx", "savcilikNobetci.docx"];
+            } else {
+                return ["savcilik.docx"];
+            }
+        case "acm": return ["acm.docx"];
+        case "bam": return ["bam.docx"];
+        case "yargitaySav":
+        case "yargitayda": return ["yargitay.docx"];
+        default: return [];
+    }
 };
 
 const getDownloadName = (fileStatus) => {
-  switch (fileStatus) {
-    case "onama":
-      return "YARGILAMANIN İADESİ BAŞVURUSU - AĞIR CEZA MAHKEMESİ.docx";
-    case "aym":
-      return "YARGILAMANIN İADESİ BAŞVURUSU - AĞIR CEZA MAHKEMESİ.docx";
-    case "aihm":
-      return "YARGILAMANIN İADESİ BAŞVURUSU - AĞIR CEZA MAHKEMESİ.docx";
-    case "savcilik":
-      return "TAKİPSİZLİK VE/VEYA TAHLİYE TALEBİ - CUMHURİYET SAVCILIĞI.docx";
-    case "acm":
-      return "BERAAT VE/VEYA TAHLİYE TALEBİ - AĞIR CEZA MAHKEMESİ.docx";
-    case "bam":
-      return "BERAAT VE/VEYA TAHLİYE TALEBİ - BÖLGE ADLİYE MAHKEMESİ.docx";
-    case "yargitaySav":
-      return "BERAAT VE/VEYA TAHLİYE TALEBİ - YARGITAY.docx";
-    case "yargitayda":
-      return "BERAAT VE/VEYA TAHLİYE TALEBİ - YARGITAY.docx";
-      default:
-      return "";
-  }
+    switch (fileStatus) {
+        case "onama":
+        case "aym":
+        case "aihm": return ["YARGILAMANIN İADESİ BAŞVURUSU - AĞIR CEZA MAHKEMESİ.docx"];
+        case "savcilik": return ["TAKİPSİZLİK VE/VEYA TAHLİYE TALEBİ - CUMHURİYET SAVCILIĞI.docx", "TAHLİYE TALEBİ - SULH CEZA HAKİMLİĞİ.docx"];
+        case "acm": return ["BERAAT VE/VEYA TAHLİYE TALEBİ - AĞIR CEZA MAHKEMESİ.docx"];
+        case "bam": return ["BERAAT VE/VEYA TAHLİYE TALEBİ - BÖLGE ADLİYE MAHKEMESİ.docx"];
+        case "yargitaySav":
+        case "yargitayda": return ["BERAAT VE/VEYA TAHLİYE TALEBİ - YARGITAY.docx"];
+        default: return [];
+    }
 };
 
 export const handleGenerateDocument = (data) => {
-  const templateName = getTemplateName(data.fileStatus);
+  const templateNames = getTemplateName(data.fileStatus, data.detentionStatus);
+  const downloadNames = getDownloadName(data.fileStatus);
 
-  fetch(process.env.PUBLIC_URL + `/${templateName}`)
-    .then((response) => response.blob())
-    .then((blob) => blob.arrayBuffer())
-    .then((arrayBuffer) => {
-      const zip = new PizZip(arrayBuffer);
-      const doc = new Docxtemplater(zip);
+  templateNames.forEach((templateName, index) => {
+      fetch(process.env.PUBLIC_URL + `/${templateName}`)
+          .then(response => response.blob())
+          .then(blob => blob.arrayBuffer())
+          .then(arrayBuffer => {
+              const zip = new PizZip(arrayBuffer);
+              const doc = new Docxtemplater(zip);
+
+      console.log("Original Accusations:", data.otherAccusations);
+      const processedAccusations = Array.isArray(data.otherAccusations) 
+    ? processAccusations(data.otherAccusations) 
+    : (data.otherAccusations ? processAccusations(data.otherAccusations.split(", ")) : []);
+
+      console.log("Processed Accusations:", processedAccusations);
+      
+
+
 
       let prisonSentenceString;
 
@@ -104,21 +113,21 @@ export const handleGenerateDocument = (data) => {
         data.fileStatus === "savcilik" && data.prosecutionStatement === "İfade verdim"
       ) {
       
-        prosecutionStatementText = `Soruşturma kapsamında, ${data.otherAccusations} nedenleri gerekçe gösterilerek hakkımda soruşturma yürütülmektedir.`;
+        prosecutionStatementText = `Soruşturma kapsamında, ${processedAccusations.join(", ")} nedenleri gerekçe gösterilerek hakkımda soruşturma yürütülmektedir.`;
       }
 
       if (
        data.fileStatus === "savcilik" && data.detentionStatus === "Tutukluydum ama tahliye edildim"
       ) {
       
-        prosecutionOtherAccusations = `Soruşturma kapsamında, ${data.otherAccusations} nedenleri gerekçe gösterilerek hakkımda soruşturma yürütülmektedir.`;
+        prosecutionOtherAccusations = `Soruşturma kapsamında, ${processedAccusations.join(", ")} nedenleri gerekçe gösterilerek hakkımda soruşturma yürütülmektedir.`;
       }
 
       if (
-        (data.fileStatus === "savcilik" && data.detentionStatus === "Tutukluyum") || (data.fileStatus === "savcilik" && data.detentionStatus === "Tutukluydum ama tahliye edildim")
+        (data.fileStatus === "savcilik" && data.detentionStatus === "Tutukluyum") 
        ) {
        
-         prosecutionOtherAccusations2 = `Soruşturma kapsamında, ${data.otherAccusations} nedenleri gerekçe gösterilerek hakkımda soruşturma yürütülmektedir.`;
+         prosecutionOtherAccusations2 = `Soruşturma kapsamında, ${processedAccusations.join(", ")} nedenleri gerekçe gösterilerek hakkımda soruşturma yürütülmektedir.`;
          prosecutionText = "Soruşturma kapsamında tutuklandım. ";
          prosecutionStatus=" ve Serbest Bırakma";
        }
@@ -126,7 +135,7 @@ export const handleGenerateDocument = (data) => {
       doc.setData({
         courtCity: data.courtCity,
         convictionDate:data.formattedConvictionDate,
-        otherAccusations: data.otherAccusations,
+     //   otherAccusations: data.otherAccusations,
         mainAccusation: data.mainAccusation,
         prisonSentence: prisonSentenceString,
         confirmationDecisionDate: data.formattedConfirmationDecisionDate,
@@ -136,7 +145,6 @@ export const handleGenerateDocument = (data) => {
         currentStatusBam:data.currentStatusBam,
         convictionDateBam:data.formattedConvictionDateBam,
         convictionDateAcm:data.formattedConvictionDateAcm,
-      
         tahliyeStatus: yargitayTahliyeText,
         tutuklulukStatus: yargitayTutuklulukText,
         bamTahliyeStatus: bamTahliye,
@@ -148,6 +156,8 @@ export const handleGenerateDocument = (data) => {
         prosecutionOtherAccusations2Data:prosecutionOtherAccusations2,
         prosecutionTextData: prosecutionText,
         prosecutionStatusData: prosecutionStatus,
+        otherAccusations: processedAccusations.join(", "),
+        queryDate: data.formattedQueryDate,
       });
 
       try {
@@ -157,10 +167,10 @@ export const handleGenerateDocument = (data) => {
       }
 
       const output = doc.getZip().generate({ type: "blob" });
-
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(output);
-      link.download = getDownloadName(data.fileStatus); 
-      link.click();
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(output);
+                link.download = downloadNames[index]; 
+                link.click();
+            });
     });
 };

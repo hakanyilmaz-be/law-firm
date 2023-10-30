@@ -49,14 +49,10 @@
     color: white;
 }
 
-
-
 .step{
     display: flex;
     flex-direction: row;
     align-items:center;
- 
-   
 }
 
 .desc-main{
@@ -65,8 +61,13 @@
     transform: translateY(5%);
 }
 
-@media(max-width: 768px){
-    .side-bar div[class^="col"]:first-child{
-        height: 100px;
-    }
+
+/* Adjust the logo position for mobile and desktop */
+.side-bar img{
+    position: absolute;
+    top:1.5rem; 
+    left: 50%;  /* centering the logo horizontally */
+    transform: translateX(-50%);  /* centering the logo horizontally */
+    z-index: 10;
+    max-width: 90%;  /* making sure the logo fits well */
 }

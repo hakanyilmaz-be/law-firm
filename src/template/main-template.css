@@ -1,10 +1,31 @@
-.sidebar{
+.sidebar {
     background-color: var(--color2);
     height: 100vh; 
+    position: sticky;
+    top: 0;
 }
 
-@media(max-width: 991px){
-    .main-template .sidebar{
-        height: auto;
+.header-mobile {
+    display: none; /* Hidden by default */
+}
+
+.main-template .mobile-footer{
+    display: none;
+}
+
+@media (max-width: 991px) {
+    .header-mobile {
+        display: block; /* Shown on screens smaller than 992px */
+    }
+
+    .main-template .mobile-footer{
+        display: block;
+    }
+
+    .sidebar {
+        display: none; 
+    }
+    .main-template .desktop-footer{
+        display: none;
     }
 }

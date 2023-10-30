@@ -1,0 +1,30 @@
+.mobile-footer-wrapper{
+    background-image: url("../../assets/img/bg/footer-image.png");
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+    width: 100%;
+    position: relative;
+    height: 90px;
+   
+}
+
+.mobile-footer-wrapper::after{
+    content: "";
+    position: absolute;
+    top:0; left:0; bottom:0; right:0;
+    background-color: var(--color2);
+    opacity: 0.90;
+
+}
+
+.mobile-footer-wrapper * {
+    z-index: 2; 
+    position: relative; /* required for z-index to work */
+}
+
+.mobile-footer-wrapper p{
+    color: white;
+    margin: 0;
+    text-align: center;
+}

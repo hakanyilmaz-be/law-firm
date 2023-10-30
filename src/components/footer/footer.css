@@ -1,0 +1,32 @@
+.footer-wrapper{
+    background-image: url("../../assets/img/bg/footer-image.png");
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+    width: 100%;
+    position: relative;
+    height: 70px;
+   
+}
+
+.footer-wrapper::after{
+    content: "";
+    position: absolute;
+    top:0; left:0; bottom:0; right:0;
+    background-color: var(--color2);
+    opacity: 0.90;
+
+}
+
+.footer-wrapper p{
+    color: white;
+    z-index: 99;
+    font-size: 1.1rem;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    justify-content: space-evenly;
+ 
+
+}

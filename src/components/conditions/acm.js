@@ -82,14 +82,14 @@ const Acm = ({ formik, cities }) => {
 
           <Form.Group as={Col} className="mb-4">
             <Form.Label>
-              <b>Hakkinizdaki temel suçlama</b>
+              <b>Hakkınızdaki temel suçlama</b>
             </Form.Label>
             <Form.Check
               type="radio"
               label="Terör örgütü üyeliği"
               name="mainAccusation"
-              value="Terör örgütü üyeliği"
-              checked={formik.values.mainAccusation === "Terör örgütü üyeliği"}
+              value="terör örgütü üyeliği"
+              checked={formik.values.mainAccusation === "terör örgütü üyeliği"}
               onChange={formik.handleChange}
               isInvalid={
                 formik.touched.mainAccusation && !!formik.errors.mainAccusation
@@ -99,8 +99,8 @@ const Acm = ({ formik, cities }) => {
               type="radio"
               label="Terör örgütü yöneticiliği"
               name="mainAccusation"
-              value="Terör örgütü yöneticiliği"
-              checked={formik.values.mainAccusation === "Terör örgütü yöneticiliği"}
+              value="terör örgütü yöneticiliği"
+              checked={formik.values.mainAccusation === "terör örgütü yöneticiliği"}
               onChange={formik.handleChange}
               isInvalid={
                 formik.touched.mainAccusation && !!formik.errors.mainAccusation
@@ -110,8 +110,8 @@ const Acm = ({ formik, cities }) => {
               type="radio"
               label="Terör örgütüne yardım"
               name="mainAccusation"
-              value="Terör örgütüne yardım"
-              checked={formik.values.mainAccusation === "Terör örgütüne yardım"}
+              value="terör örgütüne yardım"
+              checked={formik.values.mainAccusation === "terör örgütüne yardım"}
               onChange={formik.handleChange}
               isInvalid={
                 formik.touched.mainAccusation && !!formik.errors.mainAccusation
@@ -126,7 +126,9 @@ const Acm = ({ formik, cities }) => {
               <div>
                 <Form.Label>
                   <b>
-                    Soruşturma kapsamında yöneltilen suçlamalar nelerdir?
+                    Soruşturma kapsamında yöneltilen suçlamalar nelerdir? Birden
+                fazla seçebilirsiniz, eğer bunlardan farklı iddialar varsa
+                dilekçe örneğini indirdikten sonra ekleyebilirsiniz
                   </b>
                 </Form.Label>
               </div>

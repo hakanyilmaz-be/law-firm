@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { handleGenerateDocument } from "../components/word-generator/WordGenerator.js";
-import { Col, Container, Form } from "react-bootstrap";
+import { Col, Container, Form, Spinner, Button, ListGroup, Badge, Card, Accordion, Row } from "react-bootstrap";
 import "./home-page.css";
-import { Button } from "react-bootstrap";
-import Spacer from "../components/spacer/spacer";
+import { toast } from "react-toastify";
+import {BsFillCloudDownloadFill} from "react-icons/bs";
+import Spacer from "../components/spacer/spacer.js";
 import cities from "../assets/data/cities.json";
 import bamlist from "../assets/data/bam.json";
 import ConditionOnama from "../components/conditions/condition-onama.js";
@@ -13,11 +14,33 @@ import ConditionSavcilik from "../components/conditions/condition-savcilik.js";
 import Acm from "../components/conditions/acm.js";
 import Bam from "../components/conditions/bam.js";
 import Yargitay from "../components/conditions/yargitay.js";
+import ek1 from "../assets/documents/Ek1.pdf"
+import ek2 from "../assets/documents/Ek2.pdf"
+import ek3 from "../assets/documents/Ek3.pdf"
+import ek4 from "../assets/documents/Ek4.pdf"
+import savcilikCase from "../assets/img/cases/1 Yalçınkaya Kararı Sonrası Ne Yapılabilir - Savcılık.png"
+import acmCase from "../assets/img/cases/2 Yalçınkaya Kararı Sonrası Ne Yapılabilir - ACM.png"
+import istinafCase from "../assets/img/cases/3 Yalçınkaya Kararı Sonrası Ne Yapılabilir - İstinaf.png"
+import yargitayCase from "../assets/img/cases/4 Yalçınkaya Kararı Sonrası Ne Yapılabilir - Yargıtay.png"
+import certainCase from "../assets/img/cases/5 Yalçınkaya Kararı Sonrası Ne Yapılabilir - Kesinleşme.png"
+import ReactGA from 'react-ga';
+
+
 
 const Home = () => {
   const handleButtonClick = (type) => {
     formik.setFieldValue("fileType", type);
   };
+
+  const [downloading, setDownloading] = useState(false);
+  const [badgeDownloadStatus, setBadgeDownloadStatus] = useState({
+    badge1: false,
+    badge2: false,
+    badge3: false,
+    badge4: false
+  });
+  
+
 
   const initialValues = {
     fileType: "",
@@ -98,23 +121,35 @@ const Home = () => {
           return value && value.length > 0;
       }
   ),  
-    prisonDuration: Yup.object().test(
-      "prison-duration-validation",
-      "You must specify a duration or select life sentence",
-      function(value) {
-        const fileStatus = this.parent.fileStatus;
-        if (fileStatus === 'acm' || fileStatus === 'savcilik') {
-          return true;  // always valid if fileStatus is 'acm' or 'savcilik'
-        }
-    
-        const isLifeSentence = this.parent.isLifeSentence;
-        if (isLifeSentence) {
-          return true;  // valid if life sentence is checked
-        }
-    
-        return value.days || value.months || value.years;  // otherwise, at least one value should be present
+  prisonDuration: Yup.object()
+  .test(
+    "prison-duration-validation",
+    "Lütfen doldurunuz",
+    function(value) {
+      const fileStatus = this.parent.fileStatus;
+      const detentionStatus = this.parent.detentionStatus;
+
+      if (
+        fileStatus === 'acm' ||
+        (fileStatus === 'savcilik' && (detentionStatus === 'Tutukluydum ama tahliye edildim' || detentionStatus === 'Hic tutuklanmadim'))
+      ) {
+        return true; // always valid under these conditions
       }
-    ),
+
+      const isLifeSentence = this.parent.isLifeSentence;
+      if (isLifeSentence) {
+        return true;  // valid if life sentence is checked
+      }
+
+      // Check if any value exists in prisonDuration
+      if (value) {
+        return value.days || value.months || value.years;  // at least one value should be present
+      } else {
+        return false;  // if no value provided, return false to trigger validation error
+      }
+    }
+  ),
+
     
     isLifeSentence: Yup.bool(),
     confirmationDecisionDate: Yup.date().test('confirmationDecisionDate-required', 'Bu alanın doldurulması zorunludur', function(value) {
@@ -209,7 +244,14 @@ const Home = () => {
     return `${day}/${month}/${year}`;
   };
 
-  const onSubmit = (values) => {
+  const onSubmit = async (values) => {
+      // Track the submit action with Google Analytics
+      ReactGA.event({
+        category: 'User',
+        action: 'Form Submission',
+        label: 'Submit Button Clicked'
+      });
+    setDownloading(true);
     const processedValues = { ...values };
 
     if (processedValues.prisonDuration.days === "0") {
@@ -223,15 +265,6 @@ const Home = () => {
     processedValues.formattedPrisonDuration = formatPrisonDuration(
       processedValues.prisonDuration
     );
-
-    // Format otherAccusations
-    if (
-      processedValues.otherAccusations &&
-      Array.isArray(processedValues.otherAccusations)
-    ) {
-      processedValues.otherAccusations =
-        processedValues.otherAccusations.join(", ");
-    }
 
     // Format the date value
     processedValues.formattedConfirmationDecisionDate = formatDate(
@@ -250,8 +283,21 @@ const Home = () => {
       processedValues.convictionDateAcm
     );
 
+    processedValues.formattedQueryDate = formatDate(
+      processedValues.queryDate
+    );
+
     console.log(processedValues);
-    handleGenerateDocument(processedValues);
+    try {
+      await handleGenerateDocument(processedValues); 
+      toast.success("Dilekçeniz başarıyla indirildi.");
+    } catch (error) {
+      console.error("Error generating document:", error);
+    }
+
+    setTimeout(() => {
+      setDownloading(false);
+    }, 1000);
   };
 
   const formik = useFormik({
@@ -260,17 +306,34 @@ const Home = () => {
     onSubmit,
   });
 
+  const handleBadgeDownload = (badgeName) => {
+    setBadgeDownloadStatus(prevState => ({ ...prevState, [badgeName]: true }));
+  
+    setTimeout(() => {
+      setBadgeDownloadStatus(prevState => ({ ...prevState, [badgeName]: false }));
+    }, 1000);
+  };
+  
+
+
   const handleLifeSentenceChange = (e) => {
     const checked = e.target.checked;
+  
+    // Update the Formik state for isLifeSentence
     formik.setFieldValue("isLifeSentence", checked);
+  
+    // If the checkbox is checked, reset the prisonDuration values and clear its error
     if (checked) {
       formik.setFieldValue("prisonDuration", {
         days: "",
         months: "",
         years: "",
       });
+      formik.setFieldError("prisonDuration", undefined);
+      formik.setFieldTouched("prisonDuration", false, false); // The third parameter false prevents validation
     }
   };
+  
 
   const fileStatusOptions = [
     {
@@ -305,17 +368,16 @@ const Home = () => {
   ];
 
   return (
+   
     <Container>
       <div className="desc">
-        <h3>
-        AİHM Yalçınkaya Kararı Kapsamında Dilekçe Örnekleri
-        </h3>
+        <h3>AİHM Yalçınkaya Kararı Kapsamında Dilekçe Örnekleri</h3>
         <div className="title-border mt-3"></div>
         <p className="text-muted mt-3">
-          Değerli ziyaretçiler, AİHM Büyük Daire'nin Yalçınkaya Kararı (Başvuru No. 15669/20)
-          sonrası, mağduriyet yaşayanlar için örnek dilekçeler oluşturma
-          platformunu hazırladık. Sadece birkaç soruyu cevaplayarak kısa sürede dilekçe
-          hazırlamanızı kolaylaştırmayı amaçlıyoruz.
+          Değerli ziyaretçiler, AİHM Büyük Daire'nin Yalçınkaya Kararı (Başvuru
+          No. 15669/20) sonrası, mağduriyet yaşayanlar için örnek dilekçeler
+          oluşturma platformunu hazırladık. Sadece birkaç soruyu cevaplayarak
+          kısa sürede dilekçe hazırlamanızı kolaylaştırmayı amaçlıyoruz.
         </p>
       </div>
 
@@ -324,15 +386,15 @@ const Home = () => {
         <div className="file-type mb-4">
           <Form.Group as={Col} md={12} lg={12} className="mb-4">
             <Form.Label>
-              <b>1- Dosya türünü seçiniz:</b>
+              <b>Dosya türünü seçiniz:</b>
             </Form.Label>
-            <div>
+            <div className="btn-file-type">
               <Button
                 variant="outline-primary"
                 className={formik.values.fileType === "primary" ? "active" : ""}
                 onClick={() => handleButtonClick("primary")}
               >
-                Adli
+                Ceza Yargılaması
               </Button>
 
               <Button
@@ -340,7 +402,7 @@ const Home = () => {
                 className={formik.values.fileType === "dark" ? "active" : ""}
                 onClick={() => handleButtonClick("dark")}
               >
-                İdari
+                KHK İhraç Yargılaması
               </Button>
             </div>
             {formik.touched.fileType && formik.errors.fileType ? (
@@ -353,7 +415,7 @@ const Home = () => {
           <>
             <Form.Group as={Col} md={12} lg={12} className="mb-4">
               <Form.Label>
-                <b>2- Dosyanız hangi aşamada?</b>
+                <b>Dosyanız hangi aşamada?</b>
               </Form.Label>
               <div className="mb-3">
                 {fileStatusOptions.map((option, index) => (
@@ -385,32 +447,19 @@ const Home = () => {
               />
             )}
 
-            {["savcilik"].includes(
-              formik.values.fileStatus
-            ) && (
-              <ConditionSavcilik
-                formik={formik}
-                cities={cities}
-              />
+            {["savcilik"].includes(formik.values.fileStatus) && (
+              <ConditionSavcilik formik={formik} cities={cities} />
             )}
 
-            {["acm"].includes(
-              formik.values.fileStatus
-            ) && (
-              <Acm
-                formik={formik}
-                cities={cities}
-              />
+            {["acm"].includes(formik.values.fileStatus) && (
+              <Acm formik={formik} cities={cities} />
             )}
 
-            {["bam"].includes(
-              formik.values.fileStatus
-            ) && (
+            {["bam"].includes(formik.values.fileStatus) && (
               <Bam
                 formik={formik}
                 bamlist={bamlist}
                 handleLifeSentenceChange={handleLifeSentenceChange}
-
               />
             )}
 
@@ -429,7 +478,7 @@ const Home = () => {
 
         {/* Diğer Adli dosya sorularını buraya ekleyin */}
 
-        <Form.Group as={Col} md={12} lg={12} className="mb-5">
+        <Form.Group as={Col} md={12} lg={12} className="mb-3">
           <Form.Check
             type="checkbox"
             label="Yanıtlarımı kontrol ettiğimi ve doğruluğundan emin olduğumu, kişisel bölümleri dilekçeyi indirdikten sonra doldurmam gerektiğini ve gerekli ekleri indirip dilekçemle birlikte sunmam gerektiğini anladım."
@@ -446,10 +495,186 @@ const Home = () => {
           </Form.Control.Feedback>
         </Form.Group>
 
-        {/* Word belgesini oluşturmak ve indirmek için bir düğme ekleyin */}
-        <Button type="submit">Word Belgesini İndir</Button>
+        <Button type="submit" disabled={downloading}>
+          {downloading && (
+            <Spinner animation="border" variant="light" size="sm" />
+          )}{" "}
+          Dava Dilekçesini İndir
+        </Button>
       </Form>
+      <Card className="mt-5 mb-5 dilekce" >
+        <Card.Header
+          as="h5"
+          style={{ color: "white", backgroundColor: "var(--color2)" }}
+        >
+          Dava Dilekçesinin Ekleri
+        </Card.Header>
+
+        <ListGroup as="ol" className="attachments-wrapper">
+          <ListGroup.Item
+            as="li"
+            className="d-flex justify-content-between align-items-center"
+          >
+            <div className="ms-2 me-auto">
+              <div className="fw-bold">EK-1</div>
+              AİHM Yüksel Yalçınkaya v. Türkiye Kararı
+            </div>
+            <a
+              href={ek1}
+              download
+              onClick={() => handleBadgeDownload("badge1")}
+            >
+              <Badge bg="success">
+                {badgeDownloadStatus.badge1 ? (
+                  <Spinner animation="border" variant="light" size="sm" />
+                ) : (
+                  <BsFillCloudDownloadFill />
+                )}{" "}
+                İndir
+              </Badge>
+            </a>
+          </ListGroup.Item>
+          <ListGroup.Item
+            as="li"
+            className="d-flex justify-content-between align-items-center"
+          >
+            <div className="ms-2 me-auto">
+              <div className="fw-bold">EK-2</div>
+              AYM İbrahim Er ve Diğerleri Kararı
+            </div>
+            <a
+              href={ek2}
+              download
+              onClick={() => handleBadgeDownload("badge2")}
+            >
+              <Badge bg="success">
+                {badgeDownloadStatus.badge2 ? (
+                  <Spinner animation="border" variant="light" size="sm" />
+                ) : (
+                  <BsFillCloudDownloadFill />
+                )}{" "}
+                İndir
+              </Badge>
+            </a>
+          </ListGroup.Item>
+          <ListGroup.Item
+            as="li"
+            className="d-flex justify-content-between align-items-center"
+          >
+            <div className="ms-2 me-auto">
+              <div className="fw-bold">EK-3</div>
+              Prof. Dr. Doğan Soyaslan'ın Mütalaası
+            </div>
+            <a
+              href={ek3}
+              download
+              onClick={() => handleBadgeDownload("badge3")}
+            >
+              <Badge bg="success">
+                {badgeDownloadStatus.badge3 ? (
+                  <Spinner animation="border" variant="light" size="sm" />
+                ) : (
+                  <BsFillCloudDownloadFill />
+                )}{" "}
+                İndir
+              </Badge>
+            </a>
+          </ListGroup.Item>
+          <ListGroup.Item
+            as="li"
+            className="d-flex justify-content-between align-items-center"
+          >
+            <div className="ms-2 me-auto">
+              <div className="fw-bold">EK-4</div>
+              Prof. Dr. İzzet Özgenç'in Değerlendirmesi
+            </div>
+            <a
+              href={ek4}
+              download
+              onClick={() => handleBadgeDownload("badge4")}
+            >
+              <Badge bg="success">
+                {badgeDownloadStatus.badge4 ? (
+                  <Spinner animation="border" variant="light" size="sm" />
+                ) : (
+                  <BsFillCloudDownloadFill />
+                )}{" "}
+                İndir
+              </Badge>
+            </a>
+          </ListGroup.Item>
+        </ListGroup>
+      </Card>
+      
+      <div className="desc">
+        <h3>Yalçınkaya Kararı Sonrası Ne Yapılabilir</h3>
+        <div className="title-border mt-3"></div>
+        <p className="text-muted mt-3">
+          Dosyanız hangi aşamada ise buna göre yapabileceklerinizi aşağıdaki
+          şemayı inceleyerek karar verebilirsiniz.
+        </p>
+      </div>
+      <Card className="mb-5">
+        <Card.Header
+          as="h5"
+          style={{ color: "white", backgroundColor: "var(--color2)" }}
+        >
+          Neler Yapılabilir?
+        </Card.Header>
+        <Card.Body>
+          <Accordion>
+            <Accordion.Item eventKey="0">
+              <Accordion.Header
+                style={{ backgroundColor: "var(--bs-accordion-active-bg)" }}
+              >
+                Dosyam Savcılık Aşamasında
+              </Accordion.Header>
+              <Accordion.Body>
+                <Row>
+                  <img src={savcilikCase} alt="" className="img-fluid" />
+                </Row>
+              </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="1">
+              <Accordion.Header>Dosyam Ağır Ceza Mahkemesinde</Accordion.Header>
+              <Accordion.Body>
+                <Row>
+                  <img src={acmCase} alt="" className="img-fluid" />
+                </Row>
+              </Accordion.Body>
+            </Accordion.Item>
+
+            <Accordion.Item eventKey="2">
+              <Accordion.Header>Dosyam İstinafta</Accordion.Header>
+              <Accordion.Body>
+                <Row>
+                  <img src={istinafCase} alt="" className="img-fluid" />
+                </Row>
+              </Accordion.Body>
+            </Accordion.Item>
+
+            <Accordion.Item eventKey="3">
+              <Accordion.Header>Dosyam Yargıtayda</Accordion.Header>
+              <Accordion.Body>
+                <Row>
+                  <img src={yargitayCase} alt="" className="img-fluid" />
+                </Row>
+              </Accordion.Body>
+            </Accordion.Item>
+
+            <Accordion.Item eventKey="4">
+              <Accordion.Header>Dosyam Kesinleşti</Accordion.Header>
+              <Accordion.Body>
+                <Row>
+                  <img src={certainCase} alt="" className="img-fluid" />
+                </Row>
+              </Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
+        </Card.Body>
+      </Card>
     </Container>
+   
   );
 };
 

@@ -1,0 +1,72 @@
+.mobile-bar div[class^="col"]:first-child{
+    background-image: url("../../assets/img/bg/aihm-karari-yalcinkaya-dilekce.jpg");
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+
+.mobile-bar div[class^="col"]:first-child::after{
+    content: "";
+    position: absolute;
+    top:0; left:0; bottom:0; right:0;
+    background-color: var(--color2);
+    opacity: 0.85;
+    z-index: 1;
+
+}
+
+.mobile-bar * {
+    z-index: 2; 
+    position: relative; /* required for z-index to work */
+}
+
+.mobile-bar img {
+    width: 80%; /* reduce the logo size for mobile */
+    margin: 0 auto; /* center the logo */
+    display: block; /* display as block to apply margin */
+    padding: 1rem 0; /* adding some padding to give space at top and bottom */
+    z-index: 10;
+}
+
+.mobile-bar .toolbar {
+    font-size: 0.9rem; 
+    z-index: 10;
+    padding: 0.5rem 0; 
+    color: white;
+}
+
+.mobile-bar .toolbar h3 {
+    text-align: center; 
+    z-index: 10;
+    margin-bottom: -0.5rem; 
+}
+
+.mobile-bar .title-border {
+    width: 90px;
+    height: 1px;
+    background: white;
+    background: linear-gradient(to right, transparent,white, transparent);
+    margin-bottom: 1rem; 
+}
+
+.mobile-bar .step{
+    margin-bottom: 1rem;
+}
+
+.mobile-bar .step div:first-child {
+    flex-basis: 10%; /* setting width for the icon container */
+    text-align: center; /* center the icons */
+}
+
+.mobile-bar .desc-main {
+    flex-basis: 90%; /* setting width for the description container */
+    font-size: 0.8rem; /* reduce the font size for mobile */
+   
+}
+
+.mobile-bar .toolbar svg {
+    font-size: 1.6rem; /* reduce the icon size for mobile */
+    margin-right: 0.5rem;
+}

@@ -12,10 +12,45 @@
 
 .file-type button{
    margin-right: 2rem;
-   width: 8rem;
+   width: 12rem;
 }
 
 .form-check-input {
     border: solid 1.5px #b5c0d2!important;
 
+}
+
+
+.list-group-item:first-child {
+    border-top-left-radius: 0!important;
+    border-top-right-radius: 0!important;
+}
+
+.card>.list-group:last-child {
+    border-bottom-width: 0;
+    border-bottom-right-radius: 0!important;
+    border-bottom-left-radius: 0!important;
+}
+
+.attachments-wrapper .badge {
+    font-size: 1rem; /* Increase font size */
+    padding: .6em 1em; /* Adjust padding (top/bottom and left/right) */
+    border-radius: .5em; /* Optionally modify the border radius */
+}
+
+.dilekce{
+    width: 33rem;
+}
+
+@media (max-width: 991px) {
+    .file-type button {
+        width: 8rem;
+    }
+    .btn-file-type{
+        display: flex;
+        justify-content: space-evenly;
+    }
+    .dilekce{
+        width: 23rem;
+    }
 }
