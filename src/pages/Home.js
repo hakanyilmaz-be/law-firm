@@ -411,6 +411,12 @@ const Home = () => {
           </Form.Group>
         </div>
 
+              {formik.values.fileType === "dark" && (
+                <p style={{color:"red"}}><b><i>KHK İhraç Yargılaması dilekçeleri hazırlanmaktadır. Kasım ayı içinde yayınlanacaktır.</i></b></p>
+        
+              )}
+
+
         {formik.values.fileType === "primary" && (
           <>
             <Form.Group as={Col} md={12} lg={12} className="mb-4">

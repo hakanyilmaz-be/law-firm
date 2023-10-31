@@ -51,6 +51,11 @@
         justify-content: space-evenly;
     }
     .dilekce{
-        width: 23rem;
+        width: auto;
+    }
+    .attachments-wrapper .badge {
+        font-size: 0.9rem; /* Increase font size */
+        padding: .4em 0.5em; /* Adjust padding (top/bottom and left/right) */
+        border-radius: .5em; /* Optionally modify the border radius */
     }
 }
