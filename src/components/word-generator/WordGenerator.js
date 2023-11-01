@@ -166,11 +166,20 @@ export const handleGenerateDocument = (data) => {
         console.error(error);
       }
 
-      const output = doc.getZip().generate({ type: "blob" });
+      const output = doc.getZip().generate({ type: "blob", mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+
                 const link = document.createElement("a");
                 link.href = URL.createObjectURL(output);
                 link.download = downloadNames[index]; 
-                link.click();
+                setTimeout(() => {
+                  link.click();
+              
+                  // Clean up the created object URL after the file starts downloading
+                  setTimeout(() => {
+                      URL.revokeObjectURL(link.href);
+                  }, 100);
+              }, 50);
+
             });
     });
 };
