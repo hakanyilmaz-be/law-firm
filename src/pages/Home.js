@@ -505,7 +505,7 @@ const Home = () => {
           {downloading && (
             <Spinner animation="border" variant="light" size="sm" />
           )}{" "}
-          Dava Dilekçesini İndir
+          Başvuru Dilekçesini İndir
         </Button>
       </Form>
       <Card className="mt-5 mb-5 dilekce" >
@@ -513,7 +513,7 @@ const Home = () => {
           as="h5"
           style={{ color: "white", backgroundColor: "var(--color2)" }}
         >
-          Dava Dilekçesinin Ekleri
+          Başvuru Dilekçesinin Ekleri
         </Card.Header>
 
         <ListGroup as="ol" className="attachments-wrapper">
