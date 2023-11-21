@@ -22,12 +22,12 @@ const MainTemplate = ( {children}) => {
                 {children}
             </Col>
         </Row>
-        <Row className='desktop-footer'>
+       {/*  <Row className='desktop-footer'>
         <Footer/>
         </Row>
         <Row className='mobile-footer'>
           <FooterMobile/>
-        </Row>
+        </Row> */}
     </Container>
   )
 }

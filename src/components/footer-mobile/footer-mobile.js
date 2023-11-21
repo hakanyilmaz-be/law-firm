@@ -8,7 +8,7 @@ const FooterMobile = () => {
           <Container>
             <Row>
               <Col md={12} className='g-3'>
-                <p>KHK'lı Platformlar Birliği-2023 ©</p>
+                <p> ©</p>
               </Col>
               <Col md={12}>
                 <p>Soru ve iletişim için: bilgi@khkhukukiyardim.com</p>

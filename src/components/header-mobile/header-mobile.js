@@ -1,7 +1,7 @@
 import React from "react";
 import "./header-mobile.css";
 import { Col, Container, Row } from "react-bootstrap";
-import logo from "../../assets/img/logo/logo.png";
+
 import {
   BsFill1CircleFill,
   BsFill2CircleFill,
@@ -18,8 +18,8 @@ const HeaderMobile = () => {
     >
       <Row>
         <Col md={12}>
-          <img src={logo} alt="KHK'li Platformlar Birligi - logo" className="img-fluid" />
-          <div className="toolbar">
+         {/*  <img src={logo} alt="" className="img-fluid" /> */}
+          <div className="toolbar mt-3">
             <h3>Yapmanız Gerekenler</h3>
             <div className="title-border mt-3"></div>
             <div className="step">

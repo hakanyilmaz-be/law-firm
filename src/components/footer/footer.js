@@ -9,7 +9,7 @@ const Footer = () => {
         <Row>
       
           <Col>
-            <p>KHK'lı Platformlar Birliği-2023 ©</p>
+            <p> ©</p>
           </Col>
           <Col lg={3}>
            

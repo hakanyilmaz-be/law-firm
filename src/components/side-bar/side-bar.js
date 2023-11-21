@@ -1,7 +1,7 @@
 import React from "react";
 import "./side-bar.css";
 import { Col, Container, Row } from "react-bootstrap";
-import logo from "../../assets/img/logo/logo.png";
+
 import {
   BsArrowDown,
   BsFill1CircleFill,
@@ -19,7 +19,7 @@ const SideBar = () => {
     >
       <Row>
         <Col md={12}>
-          <img src={logo} alt="KHK'li Platformlar Birligi - logo" className="img-fluid" />
+         {/*  <img src={logo} alt="" className="img-fluid" /> */}
           <div className="toolbar">
             <h3>Yapmanız Gerekenler</h3>
             <Spacer />

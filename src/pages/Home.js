@@ -375,7 +375,7 @@ const Home = () => {
         <div className="title-border mt-3"></div>
         <p className="text-muted mt-3">
           Değerli ziyaretçiler, AİHM Büyük Daire'nin Yalçınkaya Kararı (Başvuru
-          No. 15669/20) sonrası, mağduriyet yaşayanlar için örnek dilekçeler
+          No. 15669/20) sonrası, KHK'lı avukatlar olarak mağduriyet yaşayanlar için örnek dilekçeler
           oluşturma platformunu hazırladık. Sadece birkaç soruyu cevaplayarak
           kısa sürede dilekçe hazırlamanızı kolaylaştırmayı amaçlıyoruz.
         </p>
@@ -412,7 +412,7 @@ const Home = () => {
         </div>
 
               {formik.values.fileType === "dark" && (
-                <p style={{color:"red"}}><b><i>KHK İhraç Yargılaması dilekçeleri hazırlanmaktadır. Kasım ayı içinde yayınlanacaktır.</i></b></p>
+                <p style={{color:"red"}}><b><i>KHK İhraç Yargılaması dilekçeleri hazırlanmaktadır. Aralık ayı içinde yayınlanacaktır.</i></b></p>
         
               )}
 
