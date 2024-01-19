@@ -18,6 +18,7 @@ import ek1 from "../assets/documents/Ek1.pdf"
 import ek2 from "../assets/documents/Ek2.pdf"
 import ek3 from "../assets/documents/Ek3.pdf"
 import ek4 from "../assets/documents/Ek4.pdf"
+import ek5 from "../assets/documents/Ek5.pdf"
 import savcilikCase from "../assets/img/cases/1 Yalçınkaya Kararı Sonrası Ne Yapılabilir - Savcılık.png"
 import acmCase from "../assets/img/cases/2 Yalçınkaya Kararı Sonrası Ne Yapılabilir - ACM.png"
 import istinafCase from "../assets/img/cases/3 Yalçınkaya Kararı Sonrası Ne Yapılabilir - İstinaf.png"
@@ -37,7 +38,8 @@ const Home = () => {
     badge1: false,
     badge2: false,
     badge3: false,
-    badge4: false
+    badge4: false,
+    badge5: false
   });
   
 
@@ -412,7 +414,7 @@ const Home = () => {
         </div>
 
               {formik.values.fileType === "dark" && (
-                <p style={{color:"red"}}><b><i>KHK İhraç Yargılaması dilekçeleri hazırlanmaktadır. Aralık ayı içinde yayınlanacaktır.</i></b></p>
+                <p style={{color:"red"}}><b><i>KHK İhraç Yargılaması dilekçeleri hazırlanmaktadır.</i></b></p>
         
               )}
 
@@ -601,6 +603,29 @@ const Home = () => {
             >
               <Badge bg="success">
                 {badgeDownloadStatus.badge4 ? (
+                  <Spinner animation="border" variant="light" size="sm" />
+                ) : (
+                  <BsFillCloudDownloadFill />
+                )}{" "}
+                İndir
+              </Badge>
+            </a>
+          </ListGroup.Item>
+          <ListGroup.Item
+            as="li"
+            className="d-flex justify-content-between align-items-center"
+          >
+            <div className="ms-2 me-auto">
+              <div className="fw-bold">EK-5</div>
+              Yargıtay eski Başkanı Prof.Dr.Sami Selçuk'un mütalaası
+            </div>
+            <a
+              href={ek5}
+              download
+              onClick={() => handleBadgeDownload("badge5")}
+            >
+              <Badge bg="success">
+                {badgeDownloadStatus.badge5 ? (
                   <Spinner animation="border" variant="light" size="sm" />
                 ) : (
                   <BsFillCloudDownloadFill />
