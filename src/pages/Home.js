@@ -19,6 +19,9 @@ import ek2 from "../assets/documents/Ek2.pdf"
 import ek3 from "../assets/documents/Ek3.pdf"
 import ek4 from "../assets/documents/Ek4.pdf"
 import ek5 from "../assets/documents/Ek5.pdf"
+import ek6 from "../assets/documents/Ek6.pdf"
+import ek7 from "../assets/documents/Ek7.pdf"
+import ek8 from "../assets/documents/Ek8.pdf"
 import savcilikCase from "../assets/img/cases/1 Yalçınkaya Kararı Sonrası Ne Yapılabilir - Savcılık.png"
 import acmCase from "../assets/img/cases/2 Yalçınkaya Kararı Sonrası Ne Yapılabilir - ACM.png"
 import istinafCase from "../assets/img/cases/3 Yalçınkaya Kararı Sonrası Ne Yapılabilir - İstinaf.png"
@@ -39,7 +42,8 @@ const Home = () => {
     badge2: false,
     badge3: false,
     badge4: false,
-    badge5: false
+    badge5: false,
+    badge6: false
   });
   
 
@@ -617,7 +621,7 @@ const Home = () => {
           >
             <div className="ms-2 me-auto">
               <div className="fw-bold">EK-5</div>
-              Yargıtay eski Başkanı Prof.Dr.Sami Selçuk'un mütalaası
+              Yargıtay eski Başkanı Prof.Dr.Sami Selçuk'un Mütalaası
             </div>
             <a
               href={ek5}
@@ -634,9 +638,77 @@ const Home = () => {
               </Badge>
             </a>
           </ListGroup.Item>
+          <ListGroup.Item
+            as="li"
+            className="d-flex justify-content-between align-items-center"
+          >
+            <div className="ms-2 me-auto">
+              <div className="fw-bold">EK-6</div>
+              TBB İnsan Hakları Merkezi'nin Raporu
+            </div>
+            <a
+              href={ek6}
+              download
+              onClick={() => handleBadgeDownload("badge6")}
+            >
+              <Badge bg="success">
+                {badgeDownloadStatus.badge6 ? (
+                  <Spinner animation="border" variant="light" size="sm" />
+                ) : (
+                  <BsFillCloudDownloadFill />
+                )}{" "}
+                İndir
+              </Badge>
+            </a>
+          </ListGroup.Item>
+          <ListGroup.Item
+            as="li"
+            className="d-flex justify-content-between align-items-center"
+          >
+            <div className="ms-2 me-auto">
+              <div className="fw-bold">EK-7</div>
+              Prof. Dr. Mustafa Ruhan Erdem'in Mütalaası
+            </div>
+            <a
+              href={ek7}
+              download
+              onClick={() => handleBadgeDownload("badge6")}
+            >
+              <Badge bg="success">
+                {badgeDownloadStatus.badge7 ? (
+                  <Spinner animation="border" variant="light" size="sm" />
+                ) : (
+                  <BsFillCloudDownloadFill />
+                )}{" "}
+                İndir
+              </Badge>
+            </a>
+          </ListGroup.Item>
+          <ListGroup.Item
+            as="li"
+            className="d-flex justify-content-between align-items-center"
+          >
+            <div className="ms-2 me-auto">
+              <div className="fw-bold">EK-8</div>
+              Doç. Dr. Tolga Şirin'in Mütalaası
+            </div>
+            <a
+              href={ek8}
+              download
+              onClick={() => handleBadgeDownload("badge8")}
+            >
+              <Badge bg="success">
+                {badgeDownloadStatus.badge8 ? (
+                  <Spinner animation="border" variant="light" size="sm" />
+                ) : (
+                  <BsFillCloudDownloadFill />
+                )}{" "}
+                İndir
+              </Badge>
+            </a>
+          </ListGroup.Item>
         </ListGroup>
       </Card>
-      
       <div className="desc">
         <h3>Yalçınkaya Kararı Sonrası Ne Yapılabilir</h3>
         <div className="title-border mt-3"></div>
